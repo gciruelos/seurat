@@ -1,12 +1,20 @@
 #include <iostream>
 #include <fstream>
+#include <vector>
 
 #include "bmp.h"
 #include "pixel.h"
 
+typedef unsigned char color;
+typedef std::vector< std::vector<color> > color_matrix;
+
+
+int rgbto8(pixel);
+int rgbto256(pixel);
+
 class Image {
 public:
-  Image(char*);
+  Image(char*, int);
   Image() {}
 
   void prnt_raw_img() const{
@@ -25,6 +33,7 @@ public:
     return (matrix[0]).size();
   }
 
+  image_matrix scale(int, int, int, int, int, int) const;
   image_matrix generate_representation(int, int, int, int, int, int) const;
 
   pixel color(int i, int j) const {

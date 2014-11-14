@@ -28,19 +28,96 @@ int image_detect_format(std::istream& is) {
   else return -1;
 }
 
+int rgbto8(pixel p) {
+  int r = p.rgb[0];
+  int g = p.rgb[1];
+  int b = p.rgb[2];
+
+  if (r < 128) {
+    if(g < 128) {
+      if(b < 128) return 0; //black
+      else        return 4; //blue
+    } else {
+      if(b < 128) return 2; //green
+      else        return 6; //cyan
+    }
+  } else {
+    if(g < 128) {
+      if(b < 128) return 1; //red
+      else        return 5; //magenta
+    } else {
+      if(b < 128) return 3; //yellow
+      else        return 7; //white
+    }
+  }
+}
+
+int rgbto16(pixel p) {
+  int r = p.rgb[0];
+  int g = p.rgb[1];
+  int b = p.rgb[2];
+
+  if (r < 128) {
+    if(g < 128) {
+      if(b < 128) return 0; //black
+      else        return 4; //blue
+    } else {
+      if(b < 128) return 2; //green
+      else        return 6; //cyan
+    }
+  } else {
+    if(g < 128) {
+      if(b < 128) return 1; //red
+      else        return 5; //magenta
+    } else {
+      if(b < 128) return 3; //yellow
+      else        return 7; //white
+    }
+  }
+}
+
+int rgbto2(pixel p){
+  if (p.rgb[0]+p.rgb[1]+p.rgb[2] > 382)
+    return 7;
+  else
+    return 0;
+}
+
+
+image_matrix Image::scale(int repr_width, int repr_height, int x_i, int delta_x, int y_i, int delta_y)const {
+  //shitty algorithm
+  //TODO : Implement bicubic interpolation
+
+  float scale = (this->width())/((float) repr_width);
+  image_matrix scaled;
+
+  for(int i = 0; i < repr_height; i++){
+    std::vector<pixel> row;
+    for(int j = 0; j < repr_width; j++){
+      int i_ = (int) i*scale; i_ = i_ * (((float) delta_y)/(matrix.size())) + y_i;
+      int j_ = (int) j*scale; j_ = j_ * (((float) delta_x)/(matrix[0].size())) + x_i;
+      if (i_ >= matrix.size()) i_ = matrix.size()-1;
+      if (j_ >= matrix[0].size()) j_ = matrix[0].size()-1;
+      row.push_back(matrix[i_][j_]);
+    }
+    scaled.push_back(row);
+  }
+  return scaled;
+}
+
 
 image_matrix Image::generate_representation(int width, int height, int x_i, int delta_x, int y_i, int delta_y)const {
 
     image_matrix img_repr;
     pixel black;
-    black.rgb[0] = 0;
-    black.rgb[1] = 0;
-    black.rgb[2] = 0;
+    black.rgb[0] = 0; black.rgb[1] = 0; black.rgb[2] = 0;
 
     float ratio_delta = ((float) delta_x) / delta_y;
     float ratio_image = ((float) width) / height;
 
-    
+    image_matrix scaled;
+
+
     if(ratio_image < ratio_delta) { 
       int repr_width = width;
       int repr_height  = (int) ((float) this->height() * repr_width / this->width());
@@ -50,7 +127,8 @@ image_matrix Image::generate_representation(int width, int height, int x_i, int 
       int padding = (height - repr_height)/2;
       bool one_more = (height - repr_height)%2 != 0;
 
-
+      scaled = this -> scale(repr_width, repr_height, x_i, delta_x, y_i, delta_y);
+      
       std::vector<pixel> black_row(repr_width, black);
       if(one_more) img_repr.push_back(black_row);
 
@@ -61,13 +139,7 @@ image_matrix Image::generate_representation(int width, int height, int x_i, int 
       for(int i = 0; i<repr_height; i++) {
         std::vector<pixel> row;
         for(int j = 0; j<repr_width; j++) {
-          int i_ = (int) i*scale; i_ = i_ * (((float) delta_y)/(matrix.size())) + y_i;
-          int j_ = (int) j*scale; j_ = j_ * (((float) delta_x)/(matrix[0].size())) + x_i;
-          if (i_ >= matrix.size()) i_ = matrix.size()-1;
-          if (j_ >= matrix[0].size()) j_ = matrix[0].size()-1;
-
-          pixel p = matrix[i_][j_];
-          row.push_back(p);
+          row.push_back(scaled[i][j]);//can be done faster
         }
         img_repr.push_back(row);
       }
@@ -84,6 +156,9 @@ image_matrix Image::generate_representation(int width, int height, int x_i, int 
 
       int padding = (width - repr_width)/2;
       bool one_more = (width - repr_width)%2 != 0;
+     
+      scaled = this -> scale(repr_width, repr_height, x_i, delta_x, y_i, delta_y);
+      
       for(int i = 0; i<height; i++) {
         std::vector<pixel> row;
         if(one_more) row.push_back(black);
@@ -92,14 +167,8 @@ image_matrix Image::generate_representation(int width, int height, int x_i, int 
           row.push_back(black);
         }
 
-        for(int j = 0; j<repr_width; j++) {
-          int i_ = (int) i*scale; i_ = i_ * (((float) delta_y)/(matrix.size())) + y_i;
-          int j_ = (int) j*scale; j_ = j_ * (((float) delta_x)/(matrix[0].size())) + x_i;     
-          if (i_ >= matrix.size()) i_ = matrix.size()-1;
-          if (j_ >= matrix[0].size()) j_ = matrix[0].size()-1;
-
-          pixel p = matrix[i_][j_];
-          row.push_back(p);
+        for(int j = 0; j<repr_width; j++) {  
+          row.push_back(scaled[i][j]);//can be done faster
         }
 
         for(int j = 0; j<padding; j++) {
@@ -113,7 +182,7 @@ image_matrix Image::generate_representation(int width, int height, int x_i, int 
   }
 
 
-Image::Image(char* filename) {
+Image::Image(char* filename, int colors) {
   std::ifstream ifs(filename);
 
   int format = image_detect_format(ifs);
