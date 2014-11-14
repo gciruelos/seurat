@@ -13,7 +13,6 @@ void read_from_bmp(char* filename, std::vector< std::vector<pixel> >& m  ) {
 
   int row_pad = (width*3 + 3) & (~3);
   unsigned char* data = new unsigned char[row_pad];
-  unsigned char tmp;
 
   for(int i = 0; i < height; i++) {
     std::vector<pixel> row;

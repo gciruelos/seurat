@@ -1,12 +1,27 @@
 #include "main.h"
 
+#define BLACK 0
+#define DARK_BLUE 1
+#define DARK_GREEN 2
+#define DARK_CYAN 3
+#define DARK_RED 4
+#define DARK_PURPLE 5
+#define DARK_YELLOW 6
+#define LIGHT_GREY 7
+#define DARK_GREY 8
+#define LIGHT_BLUE 9
+#define LIGHT_GREEN 10
+#define LIGHT_CYAN 11
+#define LIGHT_RED 12
+#define LIGHT_PURPLE 13
+#define LIGHT_YELLOW 14
+#define WHITE 15
+
 
 int rgbto256(pixel p) {
   int r = p.rgb[0];
   int g = p.rgb[1];
   int b = p.rgb[2];
-
-  int mean = (r+g+b)/3;
 
   int code256 = (int) (36 * ((r/255.0) * 5) + 6 * ((g/255.0) * 5) + ((b/255.0) * 5) + 16);
   return code256;
@@ -37,6 +52,33 @@ int rgbto8(pixel p) {
   }
 }
 
+
+
+int rgbto16(pixel p) {
+  int r = p.rgb[0];
+  int g = p.rgb[1];
+  int b = p.rgb[2];
+
+  if (r < 128) {
+    if(g < 128) {
+      if(b < 128) return 0; //black
+      else        return 4; //blue
+    } else {
+      if(b < 128) return 2; //green
+      else        return 6; //cyan
+    }
+  } else {
+    if(g < 128) {
+      if(b < 128) return 1; //red
+      else        return 5; //magenta
+    } else {
+      if(b < 128) return 3; //yellow
+      else        return 7; //white
+    }
+  }
+}
+
+
 bool curses_started = false;
 
 void end_curses() {
@@ -60,6 +102,7 @@ void start_curses() {
     }
 }
 
+//void floyd_steinberg_dithering(image_matrix& m)
 
 void print_repr_ncurses (const image_matrix& m, int colors) {
   int row = m.size(), col = m[0].size();
@@ -103,7 +146,8 @@ int main(int argc, char* argv[]) {
   std::ofstream logs;
   logs.open ("logs.txt");
   logs << "Logs...\n";
-  logs << has_colors() << std::endl;
+
+  int colors = 8;
 
   int width = img.width();
   int height = img.height();
@@ -118,41 +162,34 @@ int main(int argc, char* argv[]) {
     
     image_matrix img_repr = img.generate_representation(col/2, row, x_i, delta_x, y_i, delta_y);
     print_repr_ncurses(img_repr, 8);
-   
-    logs << "TERMINAL       : row -> " << row << "    col -> " << col << "\n";
-    logs << "REPRESENTATION : row -> " << img_repr.size() << "    col -> " << img_repr[0].size()<< "\n";
-
-    int mov_x = delta_x*0.1;
-    int mov_y = delta_y*0.1;
     
     refresh();
     int ch = getch();
-    if (ch != ERR){
-      if(ch == 'q') break;
-      else if((ch == 'Z' || ch == '+') && delta_x * ZOOM_IN > 10 && delta_y * ZOOM_IN > 10){
-        x_i += ((1-ZOOM_IN) * delta_x)/2; // This is because I want to mantain the middle,
-        y_i += ((1-ZOOM_IN) * delta_y)/2; // so if     m_x = (x_i + delta_x)/2,    then
-                                          // m_x = (x_i + 0.1 * delta_x + 0.9 * delta_x)/2 
-        delta_x *= ZOOM_IN;
-        delta_y *= ZOOM_IN;
-      }
-      else if(ch == 'z' || ch=='-') {
-        if(delta_x * ZOOM_OUT >= width || delta_y * ZOOM_OUT >= height){
-          delta_x = width; delta_y = height; x_i = 0; y_i = 0;
-        } else{
-          x_i += ((1-ZOOM_OUT) * delta_x)/2;
-          y_i += ((1-ZOOM_OUT) * delta_y)/2;
-
-          delta_x *= ZOOM_OUT;
-          delta_y *= ZOOM_OUT;
-        }
-      }
-      else if(ch == KEY_RIGHT) x_i+=mov_x;
-      else if(ch == KEY_LEFT) x_i-=mov_x;
-      else if(ch == KEY_UP) y_i-=mov_y;
-      else if(ch == KEY_DOWN) y_i+=mov_y;
-        
+    if (ch == ERR) continue;
+    else if(ch == 'q') break;
+    else if((ch == 'Z' || ch == '+') && delta_x * ZOOM_IN > 10 && delta_y * ZOOM_IN > 10){
+      x_i += ((1-ZOOM_IN) * delta_x)/2; // This is because I want to mantain the middle,
+      y_i += ((1-ZOOM_IN) * delta_y)/2; // so if     m_x = (x_i + delta_x)/2,    then
+                                        // m_x = (x_i + 0.1 * delta_x + 0.9 * delta_x)/2 
+      delta_x *= ZOOM_IN;
+      delta_y *= ZOOM_IN;
     }
+    else if(ch == 'z' || ch=='-') {
+      if(delta_x * ZOOM_OUT >= width || delta_y * ZOOM_OUT >= height){
+        delta_x = width; delta_y = height; x_i = 0; y_i = 0;
+      } else{
+        x_i += ((1-ZOOM_OUT) * delta_x)/2;
+        y_i += ((1-ZOOM_OUT) * delta_y)/2;
+
+        delta_x *= ZOOM_OUT;
+        delta_y *= ZOOM_OUT;
+      }
+    }
+    else if(ch == KEY_RIGHT) x_i+=delta_x*0.1;
+    else if(ch == KEY_LEFT) x_i-=delta_x*0.1;
+    else if(ch == KEY_UP) y_i-=delta_y*0.1;
+    else if(ch == KEY_DOWN) y_i+=delta_y*0.1;
+
     // various corrections
     if (x_i < 0) x_i = 0;
     if (y_i < 0) y_i = 0;
@@ -162,7 +199,6 @@ int main(int argc, char* argv[]) {
 
 
     logs << "delta_x -> " << delta_x << "\tdelta_y -> " << delta_y << "\tx_i -> " << x_i << "\ty_i -> " << y_i << "\n";
-    //imyIdle(); // Will be called about 40 times per second.
   }
 
   logs << "Closing...\n";
