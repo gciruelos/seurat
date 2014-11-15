@@ -1,22 +1,5 @@
 #include "main.h"
 
-#define BLACK 0
-#define DARK_BLUE 1
-#define DARK_GREEN 2
-#define DARK_CYAN 3
-#define DARK_RED 4
-#define DARK_PURPLE 5
-#define DARK_YELLOW 6
-#define LIGHT_GREY 7
-#define DARK_GREY 8
-#define LIGHT_BLUE 9
-#define LIGHT_GREEN 10
-#define LIGHT_CYAN 11
-#define LIGHT_RED 12
-#define LIGHT_PURPLE 13
-#define LIGHT_YELLOW 14
-#define WHITE 15
-
 bool curses_started = false;
 
 void end_curses() {
@@ -107,14 +90,18 @@ int main(int argc, char* argv[]) {
     int row,col;
     getmaxyx(stdscr,row,col); 
     
-    color_matrix img_repr = img.generate_representation(col/2, row, x_i, delta_x, y_i, delta_y, colors);
+    color_matrix img_repr = img.generate_representation(col/2, row,
+                                                        x_i, delta_x,
+                                                        y_i, delta_y,
+                                                        colors);
     print_repr_ncurses(img_repr, colors, col%2);
     
     refresh();
     int ch = getch();
     if (ch == ERR) continue;
     else if(ch == 'q') break;
-    else if((ch == 'Z' || ch == '+') && delta_x * ZOOM_IN > 10 && delta_y * ZOOM_IN > 10){
+    else if((ch == 'Z' || ch == '+') && 
+                delta_x * ZOOM_IN > 10 && delta_y * ZOOM_IN > 10){
       x_i += ((1-ZOOM_IN) * delta_x)/2; // This is because I want to mantain the middle,
       y_i += ((1-ZOOM_IN) * delta_y)/2; // so if     m_x = (x_i + delta_x)/2,    then
                                         // m_x = (x_i + 0.1 * delta_x + 0.9 * delta_x)/2 
@@ -143,7 +130,8 @@ int main(int argc, char* argv[]) {
     if (x_i + delta_x > width)  x_i = width - delta_x;
     if (y_i + delta_y > height) y_i = height - delta_y;
 
-    logs << "delta_x -> " << delta_x << "\tdelta_y -> " << delta_y << "\tx_i -> " << x_i << "\ty_i -> " << y_i << "\n";
+    logs << "delta_x -> " << delta_x << "\tdelta_y -> " << delta_y <<
+            "\tx_i -> " << x_i << "\ty_i -> " << y_i << "\n";
   }
 
   logs << "Closing...\n";

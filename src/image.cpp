@@ -119,7 +119,9 @@ color_matrix dithering(image_matrix m, int colors){
   for(int i = 0; i < m.size(); i++){
     for(int j = 0; j < m[0].size(); j++){
       pixel old_pixel = m[i][j];
-      pixel new_pixel = ntorgb(colors == 2? rgbto2(old_pixel) : (colors == 8? rgbto8(old_pixel) : rgbto16(old_pixel)));
+      pixel new_pixel = ntorgb(colors == 2? 
+                          rgbto2(old_pixel) : 
+                          (colors == 8? rgbto8(old_pixel) : rgbto16(old_pixel)));
       pixel quant_error = diff(old_pixel, new_pixel);
       if (i < m.size()-1){
         m[i+1][j-1] = add(m[i+1][j-1], mult(3./16, quant_error));
@@ -149,7 +151,7 @@ color_matrix Image::generate_representation(int width, int height, int x_i, int 
 
     color_matrix img_repr;
     
-    color black = 0; 
+    unsigned char black = 0; 
 
     float ratio_delta = ((float) delta_x) / delta_y;
     float ratio_image = ((float) width) / height;

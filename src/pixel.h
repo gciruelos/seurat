@@ -1,11 +1,12 @@
 #include <vector>
 
+
 #ifndef PIXEL
 struct pixel{
   int rgb[3];
 };
 
-pixel add(const pixel& a, const pixel& b){
+inline pixel add(const pixel& a, const pixel& b){
   pixel c;
   
   c.rgb[0] = a.rgb[0]+b.rgb[0];
@@ -15,7 +16,7 @@ pixel add(const pixel& a, const pixel& b){
   return c;
 }
 
-pixel diff(const pixel& a, const pixel& b){
+inline pixel diff(const pixel& a, const pixel& b){
   pixel c;
   
   c.rgb[0] = a.rgb[0]-b.rgb[0];
@@ -25,7 +26,7 @@ pixel diff(const pixel& a, const pixel& b){
   return c;
 }
 
-pixel mult(float k, const pixel& a){
+inline pixel mult(float k, const pixel& a){
   pixel c;
   
   c.rgb[0] = k * a.rgb[0];

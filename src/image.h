@@ -35,11 +35,6 @@ public:
 
   image_matrix scale(int, int, int, int, int, int) const;
   color_matrix generate_representation(int, int, int, int, int, int, int) const;
-
-  pixel color(int i, int j) const {
-    return matrix[i][j];
-  }
-
 private:
   image_matrix matrix;
 };
