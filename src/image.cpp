@@ -156,7 +156,7 @@ color_matrix Image::generate_representation(int width, int height, int x_i, int 
 
     image_matrix scaled;
 
-    color_matrix dithered = dithering(scaled, colors);
+
 
     if(ratio_image < ratio_delta) { 
       int repr_width = width;
@@ -168,6 +168,7 @@ color_matrix Image::generate_representation(int width, int height, int x_i, int 
       bool one_more = (height - repr_height)%2 != 0;
 
       scaled = this -> scale(repr_width, repr_height, x_i, delta_x, y_i, delta_y);
+      color_matrix dithered = dithering(scaled, colors);     
       
       std::vector<color> black_row(repr_width, black);
       if(one_more) img_repr.push_back(black_row);
@@ -198,6 +199,7 @@ color_matrix Image::generate_representation(int width, int height, int x_i, int 
       bool one_more = (width - repr_width)%2 != 0;
      
       scaled = this -> scale(repr_width, repr_height, x_i, delta_x, y_i, delta_y);
+      color_matrix dithered = dithering(scaled, colors); 
       
       for(int i = 0; i<height; i++) {
         std::vector<color> row;
