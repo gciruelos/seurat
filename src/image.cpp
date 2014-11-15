@@ -105,6 +105,9 @@ image_matrix Image::scale(int repr_width, int repr_height, int x_i, int delta_x,
   return scaled;
 }
 
+color_matrix dithering(image_matrix m, int colors){
+  /* Floyd–Steinberg dithering */
+}
 
 image_matrix Image::generate_representation(int width, int height, int x_i, int delta_x, int y_i, int delta_y)const {
 

@@ -44,25 +44,32 @@ void start_curses() {
 
 
 
-void print_repr_ncurses (const image_matrix& m, int colors) {
+void print_repr_ncurses (const image_matrix& m, int colors, bool one_more) {
   int row = m.size(), col = m[0].size();
 
-  for(int i = 0; i<row; i++) {
+       
+  init_pair(0, COLOR_BLACK, COLOR_BLACK); init_pair(1, COLOR_RED, COLOR_RED); 
+  init_pair(2, COLOR_GREEN, COLOR_GREEN); init_pair(3, COLOR_YELLOW, COLOR_YELLOW); 
+  init_pair(4, COLOR_BLUE, COLOR_BLUE);  init_pair(5, COLOR_MAGENTA, COLOR_MAGENTA);
+  init_pair(6, COLOR_CYAN, COLOR_CYAN);  init_pair(7, COLOR_WHITE, COLOR_BLACK);
+        
+  for(int i = 0; i<row; i++) { 
     for(int j = 0; j<col; j++) {
       pixel p = m[i][j];
       if(colors == 8) {
         int code8 = rgbto8(p);
-       
-        init_pair(0, COLOR_WHITE, COLOR_BLACK); init_pair(1, COLOR_WHITE, COLOR_RED); 
-        init_pair(2, COLOR_WHITE, COLOR_GREEN); init_pair(3, COLOR_WHITE, COLOR_YELLOW); 
-        init_pair(4, COLOR_WHITE, COLOR_BLUE);  init_pair(5, COLOR_WHITE, COLOR_MAGENTA);
-        init_pair(6, COLOR_WHITE, COLOR_CYAN);  init_pair(7, COLOR_WHITE, COLOR_WHITE);
-        
-        attron(COLOR_PAIR(code8));
+        if(code8 != 0){
+        attron(COLOR_PAIR(code8) | A_REVERSE);
         addstr("  ");
-        attroff(COLOR_PAIR(code8));
+        attroff(COLOR_PAIR(code8) | A_REVERSE);
+        }
+        else{attron(COLOR_PAIR(code8));
+        addstr("  ");
+        attroff(COLOR_PAIR(code8));}
+         
       }
     }
+  if(one_more){attron(COLOR_PAIR(0)); addstr(" "); attroff(COLOR_PAIR(0));}
   }
 }
 
@@ -93,7 +100,7 @@ int main(int argc, char* argv[]) {
     getmaxyx(stdscr,row,col); 
     
     image_matrix img_repr = img.generate_representation(col/2, row, x_i, delta_x, y_i, delta_y);
-    print_repr_ncurses(img_repr, 8);
+    print_repr_ncurses(img_repr, 8, col%2);
     
     refresh();
     int ch = getch();
