@@ -10,7 +10,7 @@ typedef std::vector< std::vector<color> > color_matrix;
 
 
 int rgbto8(pixel);
-int rgbto256(pixel);
+int rgbto16(pixel);
 
 class Image {
 public:
@@ -34,7 +34,7 @@ public:
   }
 
   image_matrix scale(int, int, int, int, int, int) const;
-  image_matrix generate_representation(int, int, int, int, int, int) const;
+  color_matrix generate_representation(int, int, int, int, int, int, int) const;
 
   pixel color(int i, int j) const {
     return matrix[i][j];

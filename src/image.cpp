@@ -53,27 +53,10 @@ int rgbto8(pixel p) {
 }
 
 int rgbto16(pixel p) {
-  int r = p.rgb[0];
-  int g = p.rgb[1];
-  int b = p.rgb[2];
-
-  if (r < 128) {
-    if(g < 128) {
-      if(b < 128) return 0; //black
-      else        return 4; //blue
-    } else {
-      if(b < 128) return 2; //green
-      else        return 6; //cyan
-    }
-  } else {
-    if(g < 128) {
-      if(b < 128) return 1; //red
-      else        return 5; //magenta
-    } else {
-      if(b < 128) return 3; //yellow
-      else        return 7; //white
-    }
-  }
+  int code8 = rgbto8(p);
+  
+  if(p.rgb[0]+p.rgb[1]+p.rgb[2] > 510) return code8+8;
+  else return code8;
 }
 
 int rgbto2(pixel p){
@@ -105,21 +88,75 @@ image_matrix Image::scale(int repr_width, int repr_height, int x_i, int delta_x,
   return scaled;
 }
 
-color_matrix dithering(image_matrix m, int colors){
-  /* Floyd–Steinberg dithering */
+pixel ntorgb(int n){
+  pixel p;
+  switch(n){
+    case 0:  p.rgb[0] = 0;   p.rgb[1] = 0;   p.rgb[2] = 0;   break;
+    case 1:  p.rgb[0] = 255; p.rgb[1] = 0;   p.rgb[2] = 0;   break;
+    case 2:  p.rgb[0] = 0;   p.rgb[1] = 255; p.rgb[2] = 0;   break;
+    case 3:  p.rgb[0] = 255; p.rgb[1] = 255; p.rgb[2] = 0;   break;
+    case 4:  p.rgb[0] = 0;   p.rgb[1] = 0;   p.rgb[2] = 255; break;
+    case 5:  p.rgb[0] = 255; p.rgb[1] = 0;   p.rgb[2] = 255; break;
+    case 6:  p.rgb[0] = 0;   p.rgb[1] = 255; p.rgb[2] = 255; break;
+    case 7:  p.rgb[0] = 255; p.rgb[1] = 255; p.rgb[2] = 255; break;
+    case 8:  p.rgb[0] = 0;   p.rgb[1] = 0;   p.rgb[2] = 0;   break;
+    case 9:  p.rgb[0] = 0;   p.rgb[1] = 0;   p.rgb[2] = 0;   break;
+    case 10: p.rgb[0] = 0;   p.rgb[1] = 0;   p.rgb[2] = 0;   break;
+    case 11: p.rgb[0] = 0;   p.rgb[1] = 0;   p.rgb[2] = 0;   break;
+    case 12: p.rgb[0] = 0;   p.rgb[1] = 0;   p.rgb[2] = 0;   break;
+    case 13: p.rgb[0] = 0;   p.rgb[1] = 0;   p.rgb[2] = 0;   break;
+    case 14: p.rgb[0] = 0;   p.rgb[1] = 0;   p.rgb[2] = 0;   break;
+    case 15: p.rgb[0] = 0;   p.rgb[1] = 0;   p.rgb[2] = 0;   break;
+  }
+  return p;
 }
 
-image_matrix Image::generate_representation(int width, int height, int x_i, int delta_x, int y_i, int delta_y)const {
+color_matrix dithering(image_matrix m, int colors){
+  /* Floyd–Steinberg dithering */
 
-    image_matrix img_repr;
-    pixel black;
-    black.rgb[0] = 0; black.rgb[1] = 0; black.rgb[2] = 0;
+  color_matrix result;
+
+  for(int i = 0; i < m.size(); i++){
+    for(int j = 0; j < m[0].size(); j++){
+      pixel old_pixel = m[i][j];
+      pixel new_pixel = ntorgb(colors == 2? rgbto2(old_pixel) : (colors == 8? rgbto8(old_pixel) : rgbto16(old_pixel)));
+      pixel quant_error = diff(old_pixel, new_pixel);
+      if (i < m.size()-1){
+        m[i+1][j-1] = add(m[i+1][j-1], mult(3./16, quant_error));
+        m[i+1][j  ] = add(m[i+1][j  ], mult(5./16, quant_error));
+        if (j < m[0].size()-1)
+          m[i+1][j+1] = add(m[i+1][j+1], mult(1./16, quant_error));
+
+      } 
+      if (j < m[0].size()-1){
+        m[i][j+1] =  add(m[i][j+1], mult(7./16, quant_error));
+      }
+    }
+  }
+
+  for(int i = 0; i < m.size(); i++){
+    std::vector<color> row;
+    for(int j = 0; j < m[0].size(); j++){
+      pixel p = m[i][j];
+      row.push_back(colors == 2? rgbto2(p) : (colors == 8? rgbto8(p) : rgbto16(p)));
+    }
+    result.push_back(row);
+  }
+  return result;
+}
+
+color_matrix Image::generate_representation(int width, int height, int x_i, int delta_x, int y_i, int delta_y, int colors)const {
+
+    color_matrix img_repr;
+    
+    color black = 0; 
 
     float ratio_delta = ((float) delta_x) / delta_y;
     float ratio_image = ((float) width) / height;
 
     image_matrix scaled;
 
+    color_matrix dithered = dithering(scaled, colors);
 
     if(ratio_image < ratio_delta) { 
       int repr_width = width;
@@ -132,7 +169,7 @@ image_matrix Image::generate_representation(int width, int height, int x_i, int 
 
       scaled = this -> scale(repr_width, repr_height, x_i, delta_x, y_i, delta_y);
       
-      std::vector<pixel> black_row(repr_width, black);
+      std::vector<color> black_row(repr_width, black);
       if(one_more) img_repr.push_back(black_row);
 
       for(int i = 0; i<padding; i++){
@@ -140,9 +177,9 @@ image_matrix Image::generate_representation(int width, int height, int x_i, int 
       }
 
       for(int i = 0; i<repr_height; i++) {
-        std::vector<pixel> row;
+        std::vector<color> row;
         for(int j = 0; j<repr_width; j++) {
-          row.push_back(scaled[i][j]);//can be done faster
+          row.push_back(dithered[i][j]);//can be done faster
         }
         img_repr.push_back(row);
       }
@@ -163,7 +200,7 @@ image_matrix Image::generate_representation(int width, int height, int x_i, int 
       scaled = this -> scale(repr_width, repr_height, x_i, delta_x, y_i, delta_y);
       
       for(int i = 0; i<height; i++) {
-        std::vector<pixel> row;
+        std::vector<color> row;
         if(one_more) row.push_back(black);
 
         for(int j = 0; j<padding; j++) {
@@ -171,7 +208,7 @@ image_matrix Image::generate_representation(int width, int height, int x_i, int 
         }
 
         for(int j = 0; j<repr_width; j++) {  
-          row.push_back(scaled[i][j]);//can be done faster
+          row.push_back(dithered[i][j]);//can be done faster
         }
 
         for(int j = 0; j<padding; j++) {
