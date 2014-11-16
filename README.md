@@ -11,18 +11,18 @@ Supported formats
 Example of use
 --------------
 
-![example of use](show.gif "Example")
+![example of use](doc/show.gif "Example")
 
 Commands
 --------
 
-|  key  |     command         |
-|-------|---------------------|
-|+ , Z  | zoom in             |
-|- , z  | zoom out            |
-|c      | change color scheme |
-|q      | quit                |
-|arrows | move                |
+|     command         |  key  | alternative |
+|---------------------|:-----:|:-----------:|
+| zoom in             |+      |      Z      |
+| zoom out            |-      |      z      |
+| change color scheme |c      |             |
+| quit                |q      |             |
+| move                |arrows |             |
 
 
 
