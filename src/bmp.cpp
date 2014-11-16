@@ -21,9 +21,9 @@ void read_from_bmp(char* filename, std::vector< std::vector<pixel> >& m  ) {
     fread(data, sizeof(unsigned char), row_pad, f);
     for(int j = 0; j < width*3; j += 3) {
       pixel p;
-      p.rgb[0] = data[j+2];
-      p.rgb[1] = data[j+1];
-      p.rgb[2] = data[j];
+      p.r = data[j+2];
+      p.g = data[j+1];
+      p.b = data[j];
 
       row.push_back(p);
     }

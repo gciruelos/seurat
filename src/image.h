@@ -3,7 +3,12 @@
 #include <vector>
 
 #include "bmp.h"
+
+#ifndef PIXEL
 #include "pixel.h"
+#define PIXEL
+#endif 
+
 
 typedef unsigned char color;
 typedef std::vector< std::vector<color> > color_matrix;
@@ -12,16 +17,19 @@ typedef std::vector< std::vector<color> > color_matrix;
 int rgbto8(pixel);
 int rgbto16(pixel);
 
+void dithering(image_matrix, int, color_matrix&);
+
+
 class Image {
 public:
-  Image(char*, int);
+  Image(char*);
   Image() {}
 
   void prnt_raw_img() const{
     for(int i = 0; i<matrix.size(); i++){
       for (int j = 0; j<matrix[0].size(); j++) {
         pixel p = matrix[i][j];
-        std::cout << p.rgb[0] << p.rgb[1] << p.rgb[2];
+        std::cout << p.r << p.g << p.b;
       }std::cout << std::endl;
     }
   }

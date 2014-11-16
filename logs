@@ -1,0 +1,294 @@
+Script started on Sat 15 Nov 2014 02:34:13 AM ART
+Love is like the measles; we all have to go through it.
+		-- Jerome K. Jerome
+[gonzalo@gonzalo seurat]$ gdb seurat ../../duck.bmp[K[6Pmake[K[K[K[Kvalgring[Kd -v -leak-check=yes ./seurat ../../s[Kduck.bmp 
+valgrind: Bad option: -leak-check=yes
+valgrind: Use --help for more information or consult the user manual.
+[gonzalo@gonzalo seurat]$ valgrind -v -leak-check=yes ./seurat ../../duck.bmp [1@-
+==13476== Memcheck, a memory error detector
+==13476== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==13476== Using Valgrind-3.10.0 and LibVEX; rerun with -h for copyright info
+==13476== Command: ./seurat ../../duck.bmp
+==13476== 
+--13476-- Valgrind options:
+--13476--    -v
+--13476--    --leak-check=yes
+--13476-- Contents of /proc/version:
+--13476--   Linux version 3.17.2-1-ARCH (builduser@thomas) (gcc version 4.9.1 20140903 (prerelease) (GCC) ) #1 SMP PREEMPT Thu Oct 30 20:49:39 CET 2014
+--13476-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-rdtscp-sse3-avx
+--13476-- Page sizes: currently 4096, max supported 4096
+--13476-- Valgrind library directory: /usr/lib/valgrind
+--13476-- Reading syms from /home/gonzalo/Documents/Research/img/seurat/seurat/seurat
+--13476-- Reading syms from /usr/lib/ld-2.20.so
+--13476-- Reading syms from /usr/lib/valgrind/memcheck-amd64-linux
+--13476--    object doesn't have a symbol table
+--13476--    object doesn't have a dynamic symbol table
+--13476-- Scheduler: using generic scheduler lock implementation.
+--13476-- Reading suppressions file: /usr/lib/valgrind/default.supp
+==13476== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-13476-by-gonzalo-on-???
+==13476== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-13476-by-gonzalo-on-???
+==13476== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-13476-by-gonzalo-on-???
+==13476== 
+==13476== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==13476== don't want to do, unless you know exactly what you're doing,
+==13476== or are doing some strange experiment):
+==13476==   /usr/lib/valgrind/../../bin/vgdb --pid=13476 ...command...
+==13476== 
+==13476== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==13476==   /path/to/gdb ./seurat
+==13476== and then give GDB the following command
+==13476==   target remote | /usr/lib/valgrind/../../bin/vgdb --pid=13476
+==13476== --pid is optional if only one valgrind process is running
+==13476== 
+--13476-- REDIR: 0x4018aa0 (ld-linux-x86-64.so.2:strlen) redirected to 0x380bd6d1 (???)
+--13476-- Reading syms from /usr/lib/valgrind/vgpreload_core-amd64-linux.so
+--13476--    object doesn't have a symbol table
+--13476-- Reading syms from /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so
+--13476--    object doesn't have a symbol table
+==13476== WARNING: new redirection conflicts with existing -- ignoring it
+--13476--     old: 0x04018aa0 (strlen              ) R-> (0000.0) 0x380bd6d1 ???
+--13476--     new: 0x04018aa0 (strlen              ) R-> (2007.0) 0x04c2d5d0 strlen
+--13476-- REDIR: 0x4018850 (ld-linux-x86-64.so.2:index) redirected to 0x4c2d180 (index)
+--13476-- REDIR: 0x4018a70 (ld-linux-x86-64.so.2:strcmp) redirected to 0x4c2e680 (strcmp)
+--13476-- REDIR: 0x4019790 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4c311d0 (mempcpy)
+--13476-- Reading syms from /usr/lib/libncursesw.so.5.9
+--13476--    object doesn't have a symbol table
+--13476-- Reading syms from /usr/lib/libstdc++.so.6.0.20
+--13476-- Reading syms from /usr/lib/libm-2.20.so
+--13476--    object doesn't have a symbol table
+--13476-- Reading syms from /usr/lib/libgcc_s.so.1
+--13476-- Reading syms from /usr/lib/libc-2.20.so
+--13476-- REDIR: 0x594ae10 (libc.so.6:strcasecmp) redirected to 0x4a24740 (_vgnU_ifunc_wrapper)
+--13476-- REDIR: 0x594d100 (libc.so.6:strncasecmp) redirected to 0x4a24740 (_vgnU_ifunc_wrapper)
+--13476-- REDIR: 0x594a590 (libc.so.6:memcpy@GLIBC_2.2.5) redirected to 0x4a24740 (_vgnU_ifunc_wrapper)
+--13476-- REDIR: 0x5948970 (libc.so.6:rindex) redirected to 0x4c2ce60 (rindex)
+--13476-- REDIR: 0x5946c70 (libc.so.6:strlen) redirected to 0x4c2d510 (strlen)
+--13476-- REDIR: 0x594a010 (libc.so.6:__GI_memcmp) redirected to 0x4c30010 (__GI_memcmp)
+--13476-- REDIR: 0x5945210 (libc.so.6:strcmp) redirected to 0x4a24740 (_vgnU_ifunc_wrapper)
+--13476-- REDIR: 0x59ecaa0 (libc.so.6:__strcmp_ssse3) redirected to 0x4c2e540 (strcmp)
+--13476-- REDIR: 0x5941200 (libc.so.6:malloc) redirected to 0x4c29f20 (malloc)
+--13476-- REDIR: 0x5949590 (libc.so.6:__GI_strstr) redirected to 0x4c31450 (__strstr_sse2)
+--13476-- REDIR: 0x50fa6a0 (libstdc++.so.6:operator new[](unsigned long)) redirected to 0x4c2aba0 (operator new[](unsigned long))
+--13476-- REDIR: 0x50fa5e0 (libstdc++.so.6:operator new(unsigned long)) redirected to 0x4c2a480 (operator new(unsigned long))
+--13476-- REDIR: 0x59ebe80 (libc.so.6:__memmove_avx_unaligned) redirected to 0x4c2e7e0 (memcpy@GLIBC_2.2.5)
+--13476-- REDIR: 0x50f8740 (libstdc++.so.6:operator delete(void*)) redirected to 0x4c2b660 (operator delete(void*))
+--13476-- REDIR: 0x594f850 (libc.so.6:__GI_memcpy) redirected to 0x4c2f080 (__GI_memcpy)
+--13476-- REDIR: 0x50f8760 (libstdc++.so.6:operator delete[](void*)) redirected to 0x4c2bbe0 (operator delete[](void*))
+--13476-- REDIR: 0x59418d0 (libc.so.6:free) redirected to 0x4c2b190 (free)
+--13476-- REDIR: 0x594f7e0 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x4a24740 (_vgnU_ifunc_wrapper)
+--13476-- REDIR: 0x59ec370 (libc.so.6:__memcpy_avx_unaligned) redirected to 0x4c2ea60 (memcpy@@GLIBC_2.14)
+==13476== Invalid read of size 4
+==13476==    at 0x4060C2: add(pixel const&, pixel const&) (pixel.h:12)
+==13476==    by 0x40542E: dithering(std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > >, int, std::vector<std::vector<unsigned char, std::allocator<unsigned char> >, std::allocator<std::vector<unsigned char, std::allocator<unsigned char> > > >&) (image.cpp:126)
+==13476==    by 0x401A9A: main (main.cpp:100)
+==13476==  Address 0x6f5fb34 is 12 bytes before a block of size 24 alloc'd
+==13476==    at 0x4C2A4F0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13476==    by 0x403FDA: __gnu_cxx::new_allocator<pixel>::allocate(unsigned long, void const*) (new_allocator.h:104)
+==13476==    by 0x403958: __gnu_cxx::__alloc_traits<std::allocator<pixel> >::allocate(std::allocator<pixel>&, unsigned long) (alloc_traits.h:182)
+==13476==    by 0x402F6B: std::_Vector_base<pixel, std::allocator<pixel> >::_M_allocate(unsigned long) (stl_vector.h:170)
+==13476==    by 0x404078: std::_Vector_base<pixel, std::allocator<pixel> >::_M_create_storage(unsigned long) (stl_vector.h:185)
+==13476==    by 0x4039F0: std::_Vector_base<pixel, std::allocator<pixel> >::_Vector_base(unsigned long, std::allocator<pixel> const&) (stl_vector.h:136)
+==13476==    by 0x40309E: std::vector<pixel, std::allocator<pixel> >::vector(std::vector<pixel, std::allocator<pixel> > const&) (stl_vector.h:320)
+==13476==    by 0x404409: void std::_Construct<std::vector<pixel, std::allocator<pixel> >, std::vector<pixel, std::allocator<pixel> > >(std::vector<pixel, std::allocator<pixel> >*, std::vector<pixel, std::allocator<pixel> > const&) (stl_construct.h:83)
+==13476==    by 0x403E35: std::vector<pixel, std::allocator<pixel> >* std::__uninitialized_copy<false>::__uninit_copy<__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*>(__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, __gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*) (stl_uninitialized.h:75)
+==13476==    by 0x403786: std::vector<pixel, std::allocator<pixel> >* std::uninitialized_copy<__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*>(__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, __gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*) (stl_uninitialized.h:125)
+==13476==    by 0x402BEF: std::vector<pixel, std::allocator<pixel> >* std::__uninitialized_copy_a<__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*, std::vector<pixel, std::allocator<pixel> > >(__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, __gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*, std::allocator<std::vector<pixel, std::allocator<pixel> > >&) (stl_uninitialized.h:278)
+==13476==    by 0x4020D2: std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > >::vector(std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > const&) (stl_vector.h:324)
+==13476== 
+==13476== Invalid read of size 4
+==13476==    at 0x4060D3: add(pixel const&, pixel const&) (pixel.h:13)
+==13476==    by 0x40542E: dithering(std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > >, int, std::vector<std::vector<unsigned char, std::allocator<unsigned char> >, std::allocator<std::vector<unsigned char, std::allocator<unsigned char> > > >&) (image.cpp:126)
+==13476==    by 0x401A9A: main (main.cpp:100)
+==13476==  Address 0x6f5fb38 is 8 bytes before a block of size 24 alloc'd
+==13476==    at 0x4C2A4F0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13476==    by 0x403FDA: __gnu_cxx::new_allocator<pixel>::allocate(unsigned long, void const*) (new_allocator.h:104)
+==13476==    by 0x403958: __gnu_cxx::__alloc_traits<std::allocator<pixel> >::allocate(std::allocator<pixel>&, unsigned long) (alloc_traits.h:182)
+==13476==    by 0x402F6B: std::_Vector_base<pixel, std::allocator<pixel> >::_M_allocate(unsigned long) (stl_vector.h:170)
+==13476==    by 0x404078: std::_Vector_base<pixel, std::allocator<pixel> >::_M_create_storage(unsigned long) (stl_vector.h:185)
+==13476==    by 0x4039F0: std::_Vector_base<pixel, std::allocator<pixel> >::_Vector_base(unsigned long, std::allocator<pixel> const&) (stl_vector.h:136)
+==13476==    by 0x40309E: std::vector<pixel, std::allocator<pixel> >::vector(std::vector<pixel, std::allocator<pixel> > const&) (stl_vector.h:320)
+==13476==    by 0x404409: void std::_Construct<std::vector<pixel, std::allocator<pixel> >, std::vector<pixel, std::allocator<pixel> > >(std::vector<pixel, std::allocator<pixel> >*, std::vector<pixel, std::allocator<pixel> > const&) (stl_construct.h:83)
+==13476==    by 0x403E35: std::vector<pixel, std::allocator<pixel> >* std::__uninitialized_copy<false>::__uninit_copy<__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*>(__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, __gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*) (stl_uninitialized.h:75)
+==13476==    by 0x403786: std::vector<pixel, std::allocator<pixel> >* std::uninitialized_copy<__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*>(__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, __gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*) (stl_uninitialized.h:125)
+==13476==    by 0x402BEF: std::vector<pixel, std::allocator<pixel> >* std::__uninitialized_copy_a<__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*, std::vector<pixel, std::allocator<pixel> > >(__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, __gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*, std::allocator<std::vector<pixel, std::allocator<pixel> > >&) (stl_uninitialized.h:278)
+==13476==    by 0x4020D2: std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > >::vector(std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > const&) (stl_vector.h:324)
+==13476== 
+==13476== Invalid read of size 4
+==13476==    at 0x4060E6: add(pixel const&, pixel const&) (pixel.h:14)
+==13476==    by 0x40542E: dithering(std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > >, int, std::vector<std::vector<unsigned char, std::allocator<unsigned char> >, std::allocator<std::vector<unsigned char, std::allocator<unsigned char> > > >&) (image.cpp:126)
+==13476==    by 0x401A9A: main (main.cpp:100)
+==13476==  Address 0x6f5fb3c is 4 bytes before a block of size 24 alloc'd
+==13476==    at 0x4C2A4F0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13476==    by 0x403FDA: __gnu_cxx::new_allocator<pixel>::allocate(unsigned long, void const*) (new_allocator.h:104)
+==13476==    by 0x403958: __gnu_cxx::__alloc_traits<std::allocator<pixel> >::allocate(std::allocator<pixel>&, unsigned long) (alloc_traits.h:182)
+==13476==    by 0x402F6B: std::_Vector_base<pixel, std::allocator<pixel> >::_M_allocate(unsigned long) (stl_vector.h:170)
+==13476==    by 0x404078: std::_Vector_base<pixel, std::allocator<pixel> >::_M_create_storage(unsigned long) (stl_vector.h:185)
+==13476==    by 0x4039F0: std::_Vector_base<pixel, std::allocator<pixel> >::_Vector_base(unsigned long, std::allocator<pixel> const&) (stl_vector.h:136)
+==13476==    by 0x40309E: std::vector<pixel, std::allocator<pixel> >::vector(std::vector<pixel, std::allocator<pixel> > const&) (stl_vector.h:320)
+==13476==    by 0x404409: void std::_Construct<std::vector<pixel, std::allocator<pixel> >, std::vector<pixel, std::allocator<pixel> > >(std::vector<pixel, std::allocator<pixel> >*, std::vector<pixel, std::allocator<pixel> > const&) (stl_construct.h:83)
+==13476==    by 0x403E35: std::vector<pixel, std::allocator<pixel> >* std::__uninitialized_copy<false>::__uninit_copy<__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*>(__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, __gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*) (stl_uninitialized.h:75)
+==13476==    by 0x403786: std::vector<pixel, std::allocator<pixel> >* std::uninitialized_copy<__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*>(__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, __gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*) (stl_uninitialized.h:125)
+==13476==    by 0x402BEF: std::vector<pixel, std::allocator<pixel> >* std::__uninitialized_copy_a<__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*, std::vector<pixel, std::allocator<pixel> > >(__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, __gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*, std::allocator<std::vector<pixel, std::allocator<pixel> > >&) (stl_uninitialized.h:278)
+==13476==    by 0x4020D2: std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > >::vector(std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > const&) (stl_vector.h:324)
+==13476== 
+==13476== Invalid write of size 8
+==13476==    at 0x405434: dithering(std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > >, int, std::vector<std::vector<unsigned char, std::allocator<unsigned char> >, std::allocator<std::vector<unsigned char, std::allocator<unsigned char> > > >&) (image.cpp:126)
+==13476==    by 0x401A9A: main (main.cpp:100)
+==13476==  Address 0x6f5fb34 is 12 bytes before a block of size 24 alloc'd
+==13476==    at 0x4C2A4F0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13476==    by 0x403FDA: __gnu_cxx::new_allocator<pixel>::allocate(unsigned long, void const*) (new_allocator.h:104)
+==13476==    by 0x403958: __gnu_cxx::__alloc_traits<std::allocator<pixel> >::allocate(std::allocator<pixel>&, unsigned long) (alloc_traits.h:182)
+==13476==    by 0x402F6B: std::_Vector_base<pixel, std::allocator<pixel> >::_M_allocate(unsigned long) (stl_vector.h:170)
+==13476==    by 0x404078: std::_Vector_base<pixel, std::allocator<pixel> >::_M_create_storage(unsigned long) (stl_vector.h:185)
+==13476==    by 0x4039F0: std::_Vector_base<pixel, std::allocator<pixel> >::_Vector_base(unsigned long, std::allocator<pixel> const&) (stl_vector.h:136)
+==13476==    by 0x40309E: std::vector<pixel, std::allocator<pixel> >::vector(std::vector<pixel, std::allocator<pixel> > const&) (stl_vector.h:320)
+==13476==    by 0x404409: void std::_Construct<std::vector<pixel, std::allocator<pixel> >, std::vector<pixel, std::allocator<pixel> > >(std::vector<pixel, std::allocator<pixel> >*, std::vector<pixel, std::allocator<pixel> > const&) (stl_construct.h:83)
+==13476==    by 0x403E35: std::vector<pixel, std::allocator<pixel> >* std::__uninitialized_copy<false>::__uninit_copy<__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*>(__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, __gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*) (stl_uninitialized.h:75)
+==13476==    by 0x403786: std::vector<pixel, std::allocator<pixel> >* std::uninitialized_copy<__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*>(__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, __gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*) (stl_uninitialized.h:125)
+==13476==    by 0x402BEF: std::vector<pixel, std::allocator<pixel> >* std::__uninitialized_copy_a<__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*, std::vector<pixel, std::allocator<pixel> > >(__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, __gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*, std::allocator<std::vector<pixel, std::allocator<pixel> > >&) (stl_uninitialized.h:278)
+==13476==    by 0x4020D2: std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > >::vector(std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > const&) (stl_vector.h:324)
+==13476== 
+==13476== Invalid write of size 4
+==13476==    at 0x405437: dithering(std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > >, int, std::vector<std::vector<unsigned char, std::allocator<unsigned char> >, std::allocator<std::vector<unsigned char, std::allocator<unsigned char> > > >&) (image.cpp:126)
+==13476==    by 0x401A9A: main (main.cpp:100)
+==13476==  Address 0x6f5fb3c is 4 bytes before a block of size 24 alloc'd
+==13476==    at 0x4C2A4F0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13476==    by 0x403FDA: __gnu_cxx::new_allocator<pixel>::allocate(unsigned long, void const*) (new_allocator.h:104)
+==13476==    by 0x403958: __gnu_cxx::__alloc_traits<std::allocator<pixel> >::allocate(std::allocator<pixel>&, unsigned long) (alloc_traits.h:182)
+==13476==    by 0x402F6B: std::_Vector_base<pixel, std::allocator<pixel> >::_M_allocate(unsigned long) (stl_vector.h:170)
+==13476==    by 0x404078: std::_Vector_base<pixel, std::allocator<pixel> >::_M_create_storage(unsigned long) (stl_vector.h:185)
+==13476==    by 0x4039F0: std::_Vector_base<pixel, std::allocator<pixel> >::_Vector_base(unsigned long, std::allocator<pixel> const&) (stl_vector.h:136)
+==13476==    by 0x40309E: std::vector<pixel, std::allocator<pixel> >::vector(std::vector<pixel, std::allocator<pixel> > const&) (stl_vector.h:320)
+==13476==    by 0x404409: void std::_Construct<std::vector<pixel, std::allocator<pixel> >, std::vector<pixel, std::allocator<pixel> > >(std::vector<pixel, std::allocator<pixel> >*, std::vector<pixel, std::allocator<pixel> > const&) (stl_construct.h:83)
+==13476==    by 0x403E35: std::vector<pixel, std::allocator<pixel> >* std::__uninitialized_copy<false>::__uninit_copy<__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*>(__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, __gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*) (stl_uninitialized.h:75)
+==13476==    by 0x403786: std::vector<pixel, std::allocator<pixel> >* std::uninitialized_copy<__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*>(__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, __gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*) (stl_uninitialized.h:125)
+==13476==    by 0x402BEF: std::vector<pixel, std::allocator<pixel> >* std::__uninitialized_copy_a<__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*, std::vector<pixel, std::allocator<pixel> > >(__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, __gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*, std::allocator<std::vector<pixel, std::allocator<pixel> > >&) (stl_uninitialized.h:278)
+==13476==    by 0x4020D2: std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > >::vector(std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > const&) (stl_vector.h:324)
+==13476== 
+==13476== 
+==13476== HEAP SUMMARY:
+==13476==     in use at exit: 2,068 bytes in 2 blocks
+==13476==   total heap usage: 7,607 allocs, 7,605 frees, 19,395,839 bytes allocated
+==13476== 
+==13476== Searching for pointers to 2 not-freed blocks
+==13476== Checked 190,864 bytes
+==13476== 
+==13476== 1,500 bytes in 1 blocks are definitely lost in loss record 2 of 2
+==13476==    at 0x4C2AC10: operator new[](unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13476==    by 0x408A67: read_from_bmp(char*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > >&) (bmp.cpp:17)
+==13476==    by 0x406013: Image::Image(char*) (image.cpp:229)
+==13476==    by 0x401934: main (main.cpp:72)
+==13476== 
+==13476== LEAK SUMMARY:
+==13476==    definitely lost: 1,500 bytes in 1 blocks
+==13476==    indirectly lost: 0 bytes in 0 blocks
+==13476==      possibly lost: 0 bytes in 0 blocks
+==13476==    still reachable: 568 bytes in 1 blocks
+==13476==         suppressed: 0 bytes in 0 blocks
+==13476== Reachable blocks (those to which a pointer was found) are not shown.
+==13476== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==13476== 
+==13476== ERROR SUMMARY: 6 errors from 6 contexts (suppressed: 0 from 0)
+==13476== 
+==13476== 1 errors in context 1 of 6:
+==13476== Invalid write of size 4
+==13476==    at 0x405437: dithering(std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > >, int, std::vector<std::vector<unsigned char, std::allocator<unsigned char> >, std::allocator<std::vector<unsigned char, std::allocator<unsigned char> > > >&) (image.cpp:126)
+==13476==    by 0x401A9A: main (main.cpp:100)
+==13476==  Address 0x6f5fb3c is 4 bytes before a block of size 24 alloc'd
+==13476==    at 0x4C2A4F0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13476==    by 0x403FDA: __gnu_cxx::new_allocator<pixel>::allocate(unsigned long, void const*) (new_allocator.h:104)
+==13476==    by 0x403958: __gnu_cxx::__alloc_traits<std::allocator<pixel> >::allocate(std::allocator<pixel>&, unsigned long) (alloc_traits.h:182)
+==13476==    by 0x402F6B: std::_Vector_base<pixel, std::allocator<pixel> >::_M_allocate(unsigned long) (stl_vector.h:170)
+==13476==    by 0x404078: std::_Vector_base<pixel, std::allocator<pixel> >::_M_create_storage(unsigned long) (stl_vector.h:185)
+==13476==    by 0x4039F0: std::_Vector_base<pixel, std::allocator<pixel> >::_Vector_base(unsigned long, std::allocator<pixel> const&) (stl_vector.h:136)
+==13476==    by 0x40309E: std::vector<pixel, std::allocator<pixel> >::vector(std::vector<pixel, std::allocator<pixel> > const&) (stl_vector.h:320)
+==13476==    by 0x404409: void std::_Construct<std::vector<pixel, std::allocator<pixel> >, std::vector<pixel, std::allocator<pixel> > >(std::vector<pixel, std::allocator<pixel> >*, std::vector<pixel, std::allocator<pixel> > const&) (stl_construct.h:83)
+==13476==    by 0x403E35: std::vector<pixel, std::allocator<pixel> >* std::__uninitialized_copy<false>::__uninit_copy<__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*>(__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, __gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*) (stl_uninitialized.h:75)
+==13476==    by 0x403786: std::vector<pixel, std::allocator<pixel> >* std::uninitialized_copy<__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*>(__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, __gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*) (stl_uninitialized.h:125)
+==13476==    by 0x402BEF: std::vector<pixel, std::allocator<pixel> >* std::__uninitialized_copy_a<__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*, std::vector<pixel, std::allocator<pixel> > >(__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, __gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*, std::allocator<std::vector<pixel, std::allocator<pixel> > >&) (stl_uninitialized.h:278)
+==13476==    by 0x4020D2: std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > >::vector(std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > const&) (stl_vector.h:324)
+==13476== 
+==13476== 
+==13476== 1 errors in context 2 of 6:
+==13476== Invalid write of size 8
+==13476==    at 0x405434: dithering(std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > >, int, std::vector<std::vector<unsigned char, std::allocator<unsigned char> >, std::allocator<std::vector<unsigned char, std::allocator<unsigned char> > > >&) (image.cpp:126)
+==13476==    by 0x401A9A: main (main.cpp:100)
+==13476==  Address 0x6f5fb34 is 12 bytes before a block of size 24 alloc'd
+==13476==    at 0x4C2A4F0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13476==    by 0x403FDA: __gnu_cxx::new_allocator<pixel>::allocate(unsigned long, void const*) (new_allocator.h:104)
+==13476==    by 0x403958: __gnu_cxx::__alloc_traits<std::allocator<pixel> >::allocate(std::allocator<pixel>&, unsigned long) (alloc_traits.h:182)
+==13476==    by 0x402F6B: std::_Vector_base<pixel, std::allocator<pixel> >::_M_allocate(unsigned long) (stl_vector.h:170)
+==13476==    by 0x404078: std::_Vector_base<pixel, std::allocator<pixel> >::_M_create_storage(unsigned long) (stl_vector.h:185)
+==13476==    by 0x4039F0: std::_Vector_base<pixel, std::allocator<pixel> >::_Vector_base(unsigned long, std::allocator<pixel> const&) (stl_vector.h:136)
+==13476==    by 0x40309E: std::vector<pixel, std::allocator<pixel> >::vector(std::vector<pixel, std::allocator<pixel> > const&) (stl_vector.h:320)
+==13476==    by 0x404409: void std::_Construct<std::vector<pixel, std::allocator<pixel> >, std::vector<pixel, std::allocator<pixel> > >(std::vector<pixel, std::allocator<pixel> >*, std::vector<pixel, std::allocator<pixel> > const&) (stl_construct.h:83)
+==13476==    by 0x403E35: std::vector<pixel, std::allocator<pixel> >* std::__uninitialized_copy<false>::__uninit_copy<__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*>(__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, __gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*) (stl_uninitialized.h:75)
+==13476==    by 0x403786: std::vector<pixel, std::allocator<pixel> >* std::uninitialized_copy<__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*>(__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, __gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*) (stl_uninitialized.h:125)
+==13476==    by 0x402BEF: std::vector<pixel, std::allocator<pixel> >* std::__uninitialized_copy_a<__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*, std::vector<pixel, std::allocator<pixel> > >(__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, __gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*, std::allocator<std::vector<pixel, std::allocator<pixel> > >&) (stl_uninitialized.h:278)
+==13476==    by 0x4020D2: std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > >::vector(std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > const&) (stl_vector.h:324)
+==13476== 
+==13476== 
+==13476== 1 errors in context 3 of 6:
+==13476== Invalid read of size 4
+==13476==    at 0x4060E6: add(pixel const&, pixel const&) (pixel.h:14)
+==13476==    by 0x40542E: dithering(std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > >, int, std::vector<std::vector<unsigned char, std::allocator<unsigned char> >, std::allocator<std::vector<unsigned char, std::allocator<unsigned char> > > >&) (image.cpp:126)
+==13476==    by 0x401A9A: main (main.cpp:100)
+==13476==  Address 0x6f5fb3c is 4 bytes before a block of size 24 alloc'd
+==13476==    at 0x4C2A4F0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13476==    by 0x403FDA: __gnu_cxx::new_allocator<pixel>::allocate(unsigned long, void const*) (new_allocator.h:104)
+==13476==    by 0x403958: __gnu_cxx::__alloc_traits<std::allocator<pixel> >::allocate(std::allocator<pixel>&, unsigned long) (alloc_traits.h:182)
+==13476==    by 0x402F6B: std::_Vector_base<pixel, std::allocator<pixel> >::_M_allocate(unsigned long) (stl_vector.h:170)
+==13476==    by 0x404078: std::_Vector_base<pixel, std::allocator<pixel> >::_M_create_storage(unsigned long) (stl_vector.h:185)
+==13476==    by 0x4039F0: std::_Vector_base<pixel, std::allocator<pixel> >::_Vector_base(unsigned long, std::allocator<pixel> const&) (stl_vector.h:136)
+==13476==    by 0x40309E: std::vector<pixel, std::allocator<pixel> >::vector(std::vector<pixel, std::allocator<pixel> > const&) (stl_vector.h:320)
+==13476==    by 0x404409: void std::_Construct<std::vector<pixel, std::allocator<pixel> >, std::vector<pixel, std::allocator<pixel> > >(std::vector<pixel, std::allocator<pixel> >*, std::vector<pixel, std::allocator<pixel> > const&) (stl_construct.h:83)
+==13476==    by 0x403E35: std::vector<pixel, std::allocator<pixel> >* std::__uninitialized_copy<false>::__uninit_copy<__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*>(__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, __gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*) (stl_uninitialized.h:75)
+==13476==    by 0x403786: std::vector<pixel, std::allocator<pixel> >* std::uninitialized_copy<__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*>(__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, __gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*) (stl_uninitialized.h:125)
+==13476==    by 0x402BEF: std::vector<pixel, std::allocator<pixel> >* std::__uninitialized_copy_a<__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*, std::vector<pixel, std::allocator<pixel> > >(__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, __gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*, std::allocator<std::vector<pixel, std::allocator<pixel> > >&) (stl_uninitialized.h:278)
+==13476==    by 0x4020D2: std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > >::vector(std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > const&) (stl_vector.h:324)
+==13476== 
+==13476== 
+==13476== 1 errors in context 4 of 6:
+==13476== Invalid read of size 4
+==13476==    at 0x4060D3: add(pixel const&, pixel const&) (pixel.h:13)
+==13476==    by 0x40542E: dithering(std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > >, int, std::vector<std::vector<unsigned char, std::allocator<unsigned char> >, std::allocator<std::vector<unsigned char, std::allocator<unsigned char> > > >&) (image.cpp:126)
+==13476==    by 0x401A9A: main (main.cpp:100)
+==13476==  Address 0x6f5fb38 is 8 bytes before a block of size 24 alloc'd
+==13476==    at 0x4C2A4F0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13476==    by 0x403FDA: __gnu_cxx::new_allocator<pixel>::allocate(unsigned long, void const*) (new_allocator.h:104)
+==13476==    by 0x403958: __gnu_cxx::__alloc_traits<std::allocator<pixel> >::allocate(std::allocator<pixel>&, unsigned long) (alloc_traits.h:182)
+==13476==    by 0x402F6B: std::_Vector_base<pixel, std::allocator<pixel> >::_M_allocate(unsigned long) (stl_vector.h:170)
+==13476==    by 0x404078: std::_Vector_base<pixel, std::allocator<pixel> >::_M_create_storage(unsigned long) (stl_vector.h:185)
+==13476==    by 0x4039F0: std::_Vector_base<pixel, std::allocator<pixel> >::_Vector_base(unsigned long, std::allocator<pixel> const&) (stl_vector.h:136)
+==13476==    by 0x40309E: std::vector<pixel, std::allocator<pixel> >::vector(std::vector<pixel, std::allocator<pixel> > const&) (stl_vector.h:320)
+==13476==    by 0x404409: void std::_Construct<std::vector<pixel, std::allocator<pixel> >, std::vector<pixel, std::allocator<pixel> > >(std::vector<pixel, std::allocator<pixel> >*, std::vector<pixel, std::allocator<pixel> > const&) (stl_construct.h:83)
+==13476==    by 0x403E35: std::vector<pixel, std::allocator<pixel> >* std::__uninitialized_copy<false>::__uninit_copy<__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*>(__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, __gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*) (stl_uninitialized.h:75)
+==13476==    by 0x403786: std::vector<pixel, std::allocator<pixel> >* std::uninitialized_copy<__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*>(__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, __gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*) (stl_uninitialized.h:125)
+==13476==    by 0x402BEF: std::vector<pixel, std::allocator<pixel> >* std::__uninitialized_copy_a<__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*, std::vector<pixel, std::allocator<pixel> > >(__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, __gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*, std::allocator<std::vector<pixel, std::allocator<pixel> > >&) (stl_uninitialized.h:278)
+==13476==    by 0x4020D2: std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > >::vector(std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > const&) (stl_vector.h:324)
+==13476== 
+==13476== 
+==13476== 1 errors in context 5 of 6:
+==13476== Invalid read of size 4
+==13476==    at 0x4060C2: add(pixel const&, pixel const&) (pixel.h:12)
+==13476==    by 0x40542E: dithering(std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > >, int, std::vector<std::vector<unsigned char, std::allocator<unsigned char> >, std::allocator<std::vector<unsigned char, std::allocator<unsigned char> > > >&) (image.cpp:126)
+==13476==    by 0x401A9A: main (main.cpp:100)
+==13476==  Address 0x6f5fb34 is 12 bytes before a block of size 24 alloc'd
+==13476==    at 0x4C2A4F0: operator new(unsigned long) (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==13476==    by 0x403FDA: __gnu_cxx::new_allocator<pixel>::allocate(unsigned long, void const*) (new_allocator.h:104)
+==13476==    by 0x403958: __gnu_cxx::__alloc_traits<std::allocator<pixel> >::allocate(std::allocator<pixel>&, unsigned long) (alloc_traits.h:182)
+==13476==    by 0x402F6B: std::_Vector_base<pixel, std::allocator<pixel> >::_M_allocate(unsigned long) (stl_vector.h:170)
+==13476==    by 0x404078: std::_Vector_base<pixel, std::allocator<pixel> >::_M_create_storage(unsigned long) (stl_vector.h:185)
+==13476==    by 0x4039F0: std::_Vector_base<pixel, std::allocator<pixel> >::_Vector_base(unsigned long, std::allocator<pixel> const&) (stl_vector.h:136)
+==13476==    by 0x40309E: std::vector<pixel, std::allocator<pixel> >::vector(std::vector<pixel, std::allocator<pixel> > const&) (stl_vector.h:320)
+==13476==    by 0x404409: void std::_Construct<std::vector<pixel, std::allocator<pixel> >, std::vector<pixel, std::allocator<pixel> > >(std::vector<pixel, std::allocator<pixel> >*, std::vector<pixel, std::allocator<pixel> > const&) (stl_construct.h:83)
+==13476==    by 0x403E35: std::vector<pixel, std::allocator<pixel> >* std::__uninitialized_copy<false>::__uninit_copy<__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*>(__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, __gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*) (stl_uninitialized.h:75)
+==13476==    by 0x403786: std::vector<pixel, std::allocator<pixel> >* std::uninitialized_copy<__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*>(__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, __gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*) (stl_uninitialized.h:125)
+==13476==    by 0x402BEF: std::vector<pixel, std::allocator<pixel> >* std::__uninitialized_copy_a<__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*, std::vector<pixel, std::allocator<pixel> > >(__gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, __gnu_cxx::__normal_iterator<std::vector<pixel, std::allocator<pixel> > const*, std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > >, std::vector<pixel, std::allocator<pixel> >*, std::allocator<std::vector<pixel, std::allocator<pixel> > >&) (stl_uninitialized.h:278)
+==13476==    by 0x4020D2: std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > >::vector(std::vector<std::vector<pixel, std::allocator<pixel> >, std::allocator<std::vector<pixel, std::allocator<pixel> > > > const&) (stl_vector.h:324)
+==13476== 
+==13476== ERROR SUMMARY: 6 errors from 6 contexts (suppressed: 0 from 0)
+[gonzalo@gonzalo seurat]$ exit
+exit
+
+Script done on Sat 15 Nov 2014 02:35:00 AM ART

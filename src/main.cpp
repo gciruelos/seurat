@@ -35,7 +35,7 @@ void print_repr_ncurses (const color_matrix& m, int colors, bool one_more) {
   for(int i = 0; i<row; i++) { 
     for(int j = 0; j<col; j++) {
       color c = m[i][j];
-      if(colors == 8) {
+      if(colors == 8 || colors == 2) {
         if(c != 0){
         attron(COLOR_PAIR(c) | A_REVERSE);
         addstr("  ");
@@ -69,14 +69,14 @@ int main(int argc, char* argv[]) {
     std::cout << "needs moar commands" << std::endl;
     return 1;
   }
-  Image img(argv[argc-1], 8);
+  Image img(argv[argc-1]);
 
-  start_curses();
-  
   std::ofstream logs;
   logs.open ("logs.txt");
   logs << "Logs...\n";
 
+  start_curses();
+  
   int colors = 8;
 
   int width = img.width();
@@ -90,10 +90,7 @@ int main(int argc, char* argv[]) {
     int row,col;
     getmaxyx(stdscr,row,col); 
     
-    color_matrix img_repr = img.generate_representation(col/2, row,
-                                                        x_i, delta_x,
-                                                        y_i, delta_y,
-                                                        colors);
+    color_matrix img_repr = img.generate_representation(col/2, row, x_i, delta_x, y_i, delta_y, colors);
     print_repr_ncurses(img_repr, colors, col%2);
     
     refresh();
