@@ -125,13 +125,13 @@ pixel ntorgb(int n){
     case 6:  p.r = 0;   p.g = 255; p.b = 255; break; // cyan
     case 7:  p.r = 255; p.g = 255; p.b = 255; break; // white
     case 8:  p.r = 0;   p.g = 0;   p.b = 0;   break;
-    case 9:  p.r = 0;   p.g = 0;   p.b = 0;   break;
-    case 10: p.r = 0;   p.g = 0;   p.b = 0;   break;
-    case 11: p.r = 0;   p.g = 0;   p.b = 0;   break;
-    case 12: p.r = 0;   p.g = 0;   p.b = 0;   break;
-    case 13: p.r = 0;   p.g = 0;   p.b = 0;   break;
-    case 14: p.r = 0;   p.g = 0;   p.b = 0;   break;
-    case 15: p.r = 0;   p.g = 0;   p.b = 0;   break;
+    case 9:  p.r = 128; p.g = 0;   p.b = 0;   break;
+    case 10: p.r = 0;   p.g = 128; p.b = 0;   break;
+    case 11: p.r = 128; p.g = 128; p.b = 0;   break;
+    case 12: p.r = 0;   p.g = 0;   p.b = 128; break;
+    case 13: p.r = 128; p.g = 0;   p.b = 128; break;
+    case 14: p.r = 0;   p.g = 128; p.b = 128; break;
+    case 15: p.r = 128; p.g = 128; p.b = 128; break;
   }
   return p;
 }

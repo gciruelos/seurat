@@ -1,6 +1,5 @@
 #include <vector>
 
-
 #ifndef PIXEL
 struct pixel{
   int r;

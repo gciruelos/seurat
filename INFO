@@ -1,0 +1,1 @@
+command to record screen : byzanz-record -c -x 685 -w 681 -y 18 -h 725 -d 5 example.gif

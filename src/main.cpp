@@ -47,13 +47,13 @@ void print_repr_ncurses (const color_matrix& m, int colors, bool one_more) {
       }
       if(colors == 16) {
         if(c > 7){
-          attron(COLOR_PAIR(c-8)| A_BOLD |A_REVERSE);
+          attron(COLOR_PAIR(c-8) |A_REVERSE);
           addstr("  ");
-          attroff(COLOR_PAIR(c-8) | A_BOLD | A_REVERSE);
+          attroff(COLOR_PAIR(c-8)| A_REVERSE);
         } else if(c > 0){
-          attron(COLOR_PAIR(c)| A_REVERSE);
+          attron(COLOR_PAIR(c)|A_BOLD| A_REVERSE);
           addstr("  ");
-          attroff(COLOR_PAIR(c) | A_REVERSE);
+          attroff(COLOR_PAIR(c) |A_BOLD| A_REVERSE);
         } else{
           attron(COLOR_PAIR(c));
           addstr("  ");
@@ -77,7 +77,7 @@ int main(int argc, char* argv[]) {
 
   start_curses();
   
-  int colors = 8;
+  int colors = 16;
 
   int width = img.width();
   int height = img.height();
@@ -120,6 +120,8 @@ int main(int argc, char* argv[]) {
     else if(ch == KEY_LEFT) x_i-=delta_x*0.1;
     else if(ch == KEY_UP) y_i-=delta_y*0.1;
     else if(ch == KEY_DOWN) y_i+=delta_y*0.1;
+    else if(ch == 'c') colors == 2? colors = 8 :
+                         colors == 8? colors = 16 : colors = 2;
 
     // various corrections
     if (x_i < 0) x_i = 0;
