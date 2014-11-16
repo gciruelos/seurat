@@ -57,12 +57,12 @@ int rgbto8(pixel p) {
 int rgbto16(pixel p) {
   int code8 = rgbto8(p);
   
-  if(p.r+p.g+p.b > 510) return code8+8;
+  if(p.r+p.g+p.b > 384) return code8+8;
   else return code8;
 }
 
 int rgbto2(pixel p){
-  if (p.r+p.g+p.b > 382)
+  if (p.r+p.g+p.b > 384)
     return 7;
   else
     return 0;
@@ -70,8 +70,8 @@ int rgbto2(pixel p){
 
 
 image_matrix Image::scale(int repr_width, int repr_height, int x_i, int delta_x, int y_i, int delta_y)const {
-  //shitty algorithm
-  //TODO : Implement bicubic interpolation
+  // neighbour kind of algorithm
+  // TODO : Implement bicubic interpolation
 
   float scale = (this->width())/((float) repr_width);
   image_matrix scaled;
@@ -153,9 +153,9 @@ pixel mult(float k, pixel a){
 }
 
 
-void dithering(image_matrix m, int colors, color_matrix& result){
-  /* Floyd–Steinberg dithering */
- 
+color_matrix dithering(image_matrix m, int colors, int option){ 
+  color_matrix result;
+
   for(int i = 0; i < m.size(); i++){
     for(int j = 0; j < m[0].size(); j++){
       pixel old_pixel = m[i][j];
@@ -164,39 +164,73 @@ void dithering(image_matrix m, int colors, color_matrix& result){
                           (colors == 8? rgbto8(old_pixel) : rgbto16(old_pixel)));
       m[i][j] = new_pixel;
       pixel quant_error = diff(old_pixel, new_pixel);
-      /*
-      
-      if (i < m.size()-1){
-                               m[i+1][j  ] = add(m[i+1][j  ], mult(5./16, quant_error)); 
-        if (j > 0)             m[i+1][j-1] = add(m[i+1][j-1], mult(3./16, quant_error));
-        if (j < m[0].size()-1) m[i+1][j+1] = add(m[i+1][j+1], mult(1./16, quant_error));
+     
+      if (option == 1){
+        /*          X   7   5 
+         *  3   5   7   5   3
+         *  1   3   5   3   1
+         * jarvis, judice, and ninke dithering (48)
+         */
+        if (j < m[0].size()-1)    m[i][j+1] =  add(m[i][j+1], mult(7./48, quant_error));
+        if (j < m[0].size()-2)    m[i][j+2] =  add(m[i][j+2], mult(5./48, quant_error));
+        if (i < m.size()-1){
+          if (j > 1)              m[i+1][j-2] =  add(m[i+1][j-2], mult(3./48, quant_error));
+          if (j > 0)              m[i+1][j-1] =  add(m[i+1][j-1], mult(5./48, quant_error));
+                                  m[i+1][j  ] =  add(m[i+1][j  ], mult(7./48, quant_error));
+          if (j < m[0].size()-1)  m[i+1][j+1] =  add(m[i+1][j+1], mult(5./48, quant_error));
+          if (j < m[0].size()-2)  m[i+1][j+2] =  add(m[i+1][j+2], mult(3./48, quant_error));
+        }
+        if (i < m.size()-2){
+          if (j > 1)              m[i+2][j-2] =  add(m[i+2][j-2], mult(1./48, quant_error));
+          if (j > 0)              m[i+2][j-1] =  add(m[i+2][j-1], mult(3./48, quant_error));
+                                  m[i+2][j  ] =  add(m[i+2][j  ], mult(5./48, quant_error));
+          if (j < m[0].size()-1)  m[i+2][j+1] =  add(m[i+2][j+1], mult(3./48, quant_error));
+          if (j < m[0].size()-2)  m[i+2][j+2] =  add(m[i+2][j+2], mult(1./48, quant_error));
+        }
       }
-      if (j < m[0].size()-1) m[i][j+1] =  add(m[i][j+1], mult(7./16, quant_error));
-     */ 
+    
 
-      /*         X   7   5 
-         3   5   7   5   3
-         1   3   5   3   1
-     jarvis, judice, and ninke dithering
-      */
-   /*   
-      if (j < m[0].size()-1)  m[i][j+1] =  add(m[i][j+1], mult(7./48, quant_error));
-      if (j < m[0].size()-2)  m[i][j+2] =  add(m[i][j+2], mult(5./48, quant_error));
-      if (i < m.size()-1){
-        if (j > 1)              m[i+1][j-2] =  add(m[i+1][j-2], mult(3./48, quant_error));
-        if (j > 0)              m[i+1][j-1] =  add(m[i+1][j-1], mult(5./48, quant_error));
-                                m[i+1][j  ] =  add(m[i+1][j  ], mult(7./48, quant_error));
-        if (j < m[0].size()-1)  m[i+1][j+1] =  add(m[i+1][j+1], mult(5./48, quant_error));
-        if (j < m[0].size()-2)  m[i+1][j+2] =  add(m[i+1][j+2], mult(3./48, quant_error));
+      if (option == 2){
+        /*      X   1   1 
+         *  1   1   1
+         *      1 
+         * atkinson dithering (8)
+         */
+        if (j < m[0].size()-1)    m[i][j+1] =  add(m[i][j+1], mult(1./8, quant_error));
+        if (j < m[0].size()-2)    m[i][j+2] =  add(m[i][j+2], mult(1./8, quant_error));
+        if (i < m.size()-1){
+          if (j > 0)              m[i+1][j-1] =  add(m[i+1][j-1], mult(1./8, quant_error));
+                                  m[i+1][j  ] =  add(m[i+1][j  ], mult(1./8, quant_error));
+          if (j < m[0].size()-1)  m[i+1][j+1] =  add(m[i+1][j+1], mult(1./8, quant_error));
+        }
+        if (i < m.size()-2){
+                                  m[i+2][j  ] =  add(m[i+2][j  ], mult(1./8, quant_error)); 
+        }
       }
-      if (i < m.size()-2){
-        if (j > 1)              m[i+2][j-2] =  add(m[i+2][j-2], mult(1./48, quant_error));
-        if (j > 0)              m[i+2][j-1] =  add(m[i+2][j-1], mult(3./48, quant_error));
-                                m[i+2][j  ] =  add(m[i+2][j  ], mult(5./48, quant_error));
-        if (j < m[0].size()-1)  m[i+2][j+1] =  add(m[i+2][j+1], mult(3./48, quant_error));
-        if (j < m[0].size()-2)  m[i+2][j+2] =  add(m[i+2][j+2], mult(1./48, quant_error));
+      if(option == 3){
+        /*      X   2
+         *  1   1 
+         * little sierra dithering (4)
+         */
+        if (j < m[0].size()-1)    m[i][j+1] =  add(m[i][j+1], mult(2./4, quant_error)); 
+        if (i < m.size()-1){ 
+          if (j > 0)              m[i+1][j-1] =  add(m[i+1][j-1], mult(1./4, quant_error));
+                                  m[i+1][j  ] =  add(m[i+1][j  ], mult(1./4, quant_error));
+        }
       }
-     */ 
+
+      if (option == 4){
+        /*      X   7  
+         *  3   5   1
+         * floyd-steinberg dithering
+         */
+        if (j < m[0].size()-1)  m[i][j+1] =  add(m[i][j+1], mult(7./16, quant_error)); 
+        if (i < m.size()-1){ 
+          if (j > 0)              m[i+1][j-1] =  add(m[i+1][j-1], mult(3./16, quant_error));
+                                  m[i+1][j  ] =  add(m[i+1][j  ], mult(4./16, quant_error));
+          if (j < m[0].size()-1)  m[i+1][j+1] =  add(m[i+1][j+1], mult(1./16, quant_error));
+        }
+      }
     }
   }
 
@@ -208,10 +242,10 @@ void dithering(image_matrix m, int colors, color_matrix& result){
     }
     result.push_back(row);
   } 
-  
+  return result;
 }
 
-color_matrix Image::generate_representation(int width, int height, int x_i, int delta_x, int y_i, int delta_y, int colors)const {
+color_matrix Image::generate_representation(int width, int height, int x_i, int delta_x, int y_i, int delta_y, int colors, int dithering_option)const {
 
   color_matrix img_repr;
   
@@ -232,8 +266,7 @@ color_matrix Image::generate_representation(int width, int height, int x_i, int 
     bool one_more = (height - repr_height)%2 != 0;
 
     scaled = this -> scale(repr_width, repr_height, x_i, delta_x, y_i, delta_y);
-    color_matrix dithered;
-    dithering(scaled, colors, dithered);     
+    color_matrix dithered = dithering(scaled, colors, dithering_option);     
     
     std::vector<color> black_row(repr_width, black);
     if(one_more) img_repr.push_back(black_row);
@@ -264,8 +297,7 @@ color_matrix Image::generate_representation(int width, int height, int x_i, int 
     bool one_more = (width - repr_width)%2 != 0;
    
     scaled = this -> scale(repr_width, repr_height, x_i, delta_x, y_i, delta_y);
-    color_matrix dithered;
-    dithering(scaled, colors, dithered); 
+    color_matrix dithered = dithering(scaled, colors, dithering_option); 
     
     for(int i = 0; i<height; i++) {
       std::vector<color> row;

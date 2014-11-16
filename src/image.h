@@ -42,7 +42,7 @@ public:
   }
 
   image_matrix scale(int, int, int, int, int, int) const;
-  color_matrix generate_representation(int, int, int, int, int, int, int) const;
+  color_matrix generate_representation(int, int, int, int, int, int, int, int) const;
 private:
   image_matrix matrix;
 };

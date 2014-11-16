@@ -78,6 +78,8 @@ int main(int argc, char* argv[]) {
   start_curses();
   
   int colors = 16;
+  int dithering_option = 0;
+
 
   int width = img.width();
   int height = img.height();
@@ -90,7 +92,7 @@ int main(int argc, char* argv[]) {
     int row,col;
     getmaxyx(stdscr,row,col); 
     
-    color_matrix img_repr = img.generate_representation(col/2, row, x_i, delta_x, y_i, delta_y, colors);
+    color_matrix img_repr = img.generate_representation(col/2, row, x_i, delta_x, y_i, delta_y, colors, dithering_option);
     print_repr_ncurses(img_repr, colors, col%2);
     
     refresh();
@@ -122,6 +124,10 @@ int main(int argc, char* argv[]) {
     else if(ch == KEY_DOWN) y_i+=delta_y*0.1;
     else if(ch == 'c') colors == 2? colors = 8 :
                          colors == 8? colors = 16 : colors = 2;
+    else if(ch == 'C') colors == 16? colors = 8 :
+                         colors == 8? colors = 2 : colors = 16;
+    else if(ch == 'd') dithering_option < 4 ? dithering_option++ :
+                                              dithering_option = 0;
 
     // various corrections
     if (x_i < 0) x_i = 0;
