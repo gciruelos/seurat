@@ -16,11 +16,14 @@ Example of use
 Commands
 --------
 
-+ , Z  : zoom in
-- , z  : zoom out
-c      : change color scheme
-q      : quit
-arrows : move
+|  key  |     command         |
+|-------|---------------------|
+|+ , Z  | zoom in             |
+|- , z  | zoom out            |
+|c      | change color scheme |
+|q      | quit                |
+|arrows | move                |
+
 
 
 
