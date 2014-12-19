@@ -23,124 +23,189 @@ void start_curses() {
     }
 }
 
-void print_repr_ncurses (const color_matrix& m, int colors, bool one_more) {
-  int row = m.size(), col = m[0].size();
 
-       
+
+void print_repr_ncurses (const color_matrix& m, options* opt, bool one_more) {
+  int row = m.size(), col = m[0].size();
+  int colors = opt->colors;
+  std::string imgsize = std::to_string(opt->width) + " x " + std::to_string(opt->height);
+
   init_pair(0, COLOR_BLACK, COLOR_BLACK); init_pair(1, COLOR_RED, COLOR_BLACK); 
   init_pair(2, COLOR_GREEN, COLOR_BLACK); init_pair(3, COLOR_YELLOW, COLOR_BLACK); 
   init_pair(4, COLOR_BLUE, COLOR_BLACK);  init_pair(5, COLOR_MAGENTA, COLOR_BLACK);
   init_pair(6, COLOR_CYAN, COLOR_BLACK);  init_pair(7, COLOR_WHITE, COLOR_BLACK);
-        
-  for(int i = 0; i<row; i++) { 
+  
+  for(int i = 0; i<row; i++) {
+    if(one_more){attron(COLOR_PAIR(0)); addch(' '); attroff(COLOR_PAIR(0));}       
+    
     for(int j = 0; j<col; j++) {
-      color c = m[i][j];
-      if(colors == 8 || colors == 2) {
-        if(c != 0){
-        attron(COLOR_PAIR(c) | A_REVERSE);
-        addstr("  ");
-        attroff(COLOR_PAIR(c) | A_REVERSE);
-        }
-        else{attron(COLOR_PAIR(c));
-        addstr("  ");
-        attroff(COLOR_PAIR(c));} 
+      color c = colors == 16? m[i][j] : (m[i][j] == 0 ? 0 : m[i][j] + 8); // horrible hack  
+      if(c > 7)
+        attron(COLOR_PAIR(c-8) | A_REVERSE);
+      else if(c > 0)
+        attron(COLOR_PAIR(c) | A_BOLD | A_REVERSE); // A_BOLD makes the color lighter
+      else 
+        attron(COLOR_PAIR(c));
+    
+      /* here I print what has to be printed, be it nothing or some file info */
+      if(opt->info && i == 0){
+        int sz = opt->filename.size();
+        if (2*j < sz) addch(opt->filename[2*j]); else addch(' ');
+        if (2*j+1 < sz) addch(opt->filename[2*j+1]); else addch(' ');
       }
-      if(colors == 16) {
-        if(c > 7){
-          attron(COLOR_PAIR(c-8) |A_REVERSE);
-          addstr("  ");
-          attroff(COLOR_PAIR(c-8)| A_REVERSE);
-        } else if(c > 0){
-          attron(COLOR_PAIR(c)|A_BOLD| A_REVERSE);
-          addstr("  ");
-          attroff(COLOR_PAIR(c) |A_BOLD| A_REVERSE);
-        } else{
-          attron(COLOR_PAIR(c));
-          addstr("  ");
-          attroff(COLOR_PAIR(c));} 
+      else if(opt->info && i == 1){
+        int sz = imgsize.size();
+        if (2*j < sz) addch(imgsize[2*j]); else addch(' ');
+        if (2*j+1 < sz) addch(imgsize[2*j+1]); else addch(' ');
+      }else {
+        addch(' '); addch(' ');
       }
+      
+      
+      
+      attrset(A_NORMAL);
     }
-  if(one_more){attron(COLOR_PAIR(0)); addstr(" "); attroff(COLOR_PAIR(0));}
   }
 }
 
-int main(int argc, char* argv[]) {
-  if(argc == 1) {
-    std::cout << "needs moar commands" << std::endl;
+int input_action(options* opt){
+  /**
+   * <Reads input char and does expected action>
+   * @param opt: the options struct to be potentially modified
+   * @return Returns 0 if 'q' was pressed, 2 if it failed to read input, 1 otherwise
+   */
+
+  char ch = getch();
+  if(opt->debug)
+    opt->logs << "key pressed -> " << ch << "  (ascii "<< (int) ch << ")" <<std::endl;
+
+
+  if (ch == ERR) return 2;
+  else if(ch == 'q') return 0;
+  else if((ch == 'Z' || ch == '+') && 
+             opt->delta_x * ZOOM_IN > 10 && opt->delta_y * ZOOM_IN > 10){
+    opt->x_i += ((1-ZOOM_IN) * opt->delta_x)/2; // This is because I want to mantain the middle,
+    opt->y_i += ((1-ZOOM_IN) * opt->delta_y)/2; // so if     m_x = (x_i + delta_x)/2,    then
+                                                // m_x = (x_i + 0.1 * delta_x + 0.9 * delta_x)/2 
+    opt->delta_x *= ZOOM_IN;
+    opt->delta_y *= ZOOM_IN;
+  }
+  else if(ch == 'z' || ch=='-') {
+    if(opt->delta_x * ZOOM_OUT >= opt->width || opt->delta_y * ZOOM_OUT >= opt->height){
+      opt->delta_x = opt->width; opt->delta_y = opt->height; opt->x_i = 0; opt->y_i = 0;
+    } else{
+      opt->x_i += ((1-ZOOM_OUT) * opt->delta_x)/2;
+      opt->y_i += ((1-ZOOM_OUT) * opt->delta_y)/2;
+
+      opt->delta_x *= ZOOM_OUT;
+      opt->delta_y *= ZOOM_OUT;
+    }
+  }
+  else if(ch == KEY_RIGHT) opt->x_i += opt->delta_x * 0.1;
+  else if(ch == KEY_LEFT)  opt->x_i -= opt->delta_x * 0.1;
+  else if(ch == KEY_UP)    opt->y_i -= opt->delta_y * 0.1;
+  else if(ch == KEY_DOWN)  opt->y_i += opt->delta_y * 0.1;
+  
+  
+  else if(ch == 'i')  opt->info = !opt->info;
+ 
+  else if(ch == 'c') opt->colors == 2? opt->colors = 8 :
+                       opt->colors == 8? opt->colors = 16 : opt->colors = 2;
+  else if(ch == 'C') opt->colors == 16? opt->colors = 8 :
+                       opt->colors == 8? opt->colors = 2 : opt->colors = 16;
+  else if(ch == 'd') opt->dithering_option < 4 ? opt->dithering_option++ :
+                                            opt->dithering_option = 0;
+
+  // various corrections
+  if (opt->x_i < 0) opt->x_i = 0;
+  if (opt->y_i < 0) opt->y_i = 0;
+  if (opt->x_i + opt->delta_x > opt->width)  opt->x_i = opt->width - opt->delta_x;
+  if (opt->y_i + opt->delta_y > opt->height) opt->y_i = opt->height - opt->delta_y;
+
+  return 1; // everyting went fine
+}
+
+
+static void show_usage(std::string name){
+  std::cerr << "Usage: " << name << "[--debug] [-h | --help] filename" << std::endl
+            << "Options:\n"
+            << "\t-h,--help\t\t\tShow this message\n"
+            << "\t--debug\tDebug mode"
+            << std::endl;
+}
+
+int parse_args(int argc, char* argv[], options* opt){   
+  /**
+   * <Parses command-line arguments>
+   * @param argc: number of arguments
+   * @param argv: array of argument values
+   * @return Returns 1 if it fails (printing the reason), 0 if everything went ok
+   */
+
+  /* initialize opt to default values */
+  opt->colors = 8;
+  opt->dithering_option = 0;
+
+  opt->debug = false;
+  opt->info = false;
+
+  /* read args and change values if necessary */
+  if(argc == 1){
+    std::cout << "needs file" << std::endl;  
+    show_usage(argv[0]);
     return 1;
   }
-  Image img(argv[argc-1]);
+  for (int i = 1; i < argc; i++) {
+    std::string arg = argv[i];
+    if ((arg == "-h") || (arg == "--help")) {
+      show_usage(argv[0]);
+      return 1;
+    } else if ((arg == "--debug")) {
+      opt->debug = true;
+      opt->logs.open ("logs.txt");
+    } else {
+      opt->filename = argv[i];
+    }
+  }
+  return 0;
+}
 
-  std::ofstream logs;
-  logs.open ("logs.txt");
-  logs << "Logs...\n";
-
-  start_curses();
+int main(int argc, char* argv[]){
+  options* opt = new options;
+  if(parse_args(argc, argv, opt)) return 1;
   
-  int colors = 16;
-  int dithering_option = 0;
+  start_curses();
 
+  Image img(opt->filename);
 
-  int width = img.width();
-  int height = img.height();
+  opt->width = img.width();
+  opt->height = img.height();
 
-  int x_i = 0, delta_x = width;
-  int y_i = 0, delta_y = height;
+  opt->x_i = 0, opt->delta_x = opt->width;
+  opt->y_i = 0, opt->delta_y = opt->height; 
 
+  if(opt->debug) opt->logs << "Logs...\n";
+  
+  /* main program loop */
   while (true) {
     clear();
     int row,col;
     getmaxyx(stdscr,row,col); 
     
-    color_matrix img_repr = img.generate_representation(col/2, row, x_i, delta_x, y_i, delta_y, colors, dithering_option);
-    print_repr_ncurses(img_repr, colors, col%2);
+    color_matrix img_repr = img.generate_representation(col/2, row, opt);
+    print_repr_ncurses(img_repr, opt, col%2);
     
     refresh();
-    int ch = getch();
-    if (ch == ERR) continue;
-    else if(ch == 'q') break;
-    else if((ch == 'Z' || ch == '+') && 
-                delta_x * ZOOM_IN > 10 && delta_y * ZOOM_IN > 10){
-      x_i += ((1-ZOOM_IN) * delta_x)/2; // This is because I want to mantain the middle,
-      y_i += ((1-ZOOM_IN) * delta_y)/2; // so if     m_x = (x_i + delta_x)/2,    then
-                                        // m_x = (x_i + 0.1 * delta_x + 0.9 * delta_x)/2 
-      delta_x *= ZOOM_IN;
-      delta_y *= ZOOM_IN;
-    }
-    else if(ch == 'z' || ch=='-') {
-      if(delta_x * ZOOM_OUT >= width || delta_y * ZOOM_OUT >= height){
-        delta_x = width; delta_y = height; x_i = 0; y_i = 0;
-      } else{
-        x_i += ((1-ZOOM_OUT) * delta_x)/2;
-        y_i += ((1-ZOOM_OUT) * delta_y)/2;
-
-        delta_x *= ZOOM_OUT;
-        delta_y *= ZOOM_OUT;
-      }
-    }
-    else if(ch == KEY_RIGHT) x_i+=delta_x*0.1;
-    else if(ch == KEY_LEFT) x_i-=delta_x*0.1;
-    else if(ch == KEY_UP) y_i-=delta_y*0.1;
-    else if(ch == KEY_DOWN) y_i+=delta_y*0.1;
-    else if(ch == 'c') colors == 2? colors = 8 :
-                         colors == 8? colors = 16 : colors = 2;
-    else if(ch == 'C') colors == 16? colors = 8 :
-                         colors == 8? colors = 2 : colors = 16;
-    else if(ch == 'd') dithering_option < 4 ? dithering_option++ :
-                                              dithering_option = 0;
-
-    // various corrections
-    if (x_i < 0) x_i = 0;
-    if (y_i < 0) y_i = 0;
-    if (x_i + delta_x > width)  x_i = width - delta_x;
-    if (y_i + delta_y > height) y_i = height - delta_y;
-
-    logs << "delta_x -> " << delta_x << "\tdelta_y -> " << delta_y <<
-            "\tx_i -> " << x_i << "\ty_i -> " << y_i << "\n";
+    int result = input_action(opt);
+    if(!result) break;
+    if(opt->debug)
+      opt->logs << "delta_x = " << opt->delta_x << "\tdelta_y = " << opt->delta_y <<
+            "\tx_i = " << opt->x_i << "\ty_i = " << opt->y_i << "\n";
   }
 
-  logs << "Closing...\n";
-  logs.close();
+  if (opt->debug){opt->logs << "Closing...\n"; opt->logs.close();}
+
   end_curses();
+  delete opt;
 }
 

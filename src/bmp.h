@@ -6,4 +6,4 @@
 #define PIXEL
 #endif 
 
-void read_from_bmp(char*, std::vector< std::vector<pixel> >& );
+void read_from_bmp(const char*, std::vector< std::vector<pixel> >& );

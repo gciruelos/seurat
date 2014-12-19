@@ -20,9 +20,10 @@ Commands
 |---------------------|:-----:|:-----------:|
 | zoom in             |+      |      Z      |
 | zoom out            |-      |      z      |
-| change color scheme |c      |             |
-| quit                |q      |             |
 | move                |arrows |             |
+| change color scheme |c      |      C      |
+| change dithering    |d      |             |
+| quit                |q      |             |
 
 
 

@@ -1,6 +1,6 @@
 #include "bmp.h"
 
-void read_from_bmp(char* filename, std::vector< std::vector<pixel> >& m  ) {
+void read_from_bmp(const char* filename, std::vector< std::vector<pixel> >& m  ) {
   //http://stackoverflow.com/questions/9296059/read-pixel-value-in-bmp-file
 
   FILE* f = fopen(filename, "rb");
@@ -27,6 +27,6 @@ void read_from_bmp(char* filename, std::vector< std::vector<pixel> >& m  ) {
     }
     m.insert(m.begin(), row);
   }
-  delete data;
+  delete[] data;
 }
 

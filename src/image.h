@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <string>
 
 #include "bmp.h"
 
@@ -19,10 +20,28 @@ int rgbto16(pixel);
 
 void dithering(image_matrix, int, color_matrix&);
 
+struct options{
+  int colors;
+  int dithering_option;
+
+  int width, height;
+
+  int x_i, delta_x;
+  int y_i, delta_y;
+
+  bool debug;
+  std::ofstream logs;
+
+  std::string filename;
+
+  bool info;
+};
+
+
 
 class Image {
 public:
-  Image(char*);
+  Image(std::string);
   Image() {}
 
   void prnt_raw_img() const{
@@ -42,7 +61,8 @@ public:
   }
 
   image_matrix scale(int, int, int, int, int, int) const;
-  color_matrix generate_representation(int, int, int, int, int, int, int, int) const;
+  color_matrix generate_representation(int, int, options*) const;
 private:
   image_matrix matrix;
 };
+
