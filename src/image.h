@@ -33,6 +33,7 @@ struct options{
   std::ofstream logs;
 
   std::string filename;
+  bool opened;
 
   bool info;
 };
@@ -41,7 +42,7 @@ struct options{
 
 class Image {
 public:
-  Image(std::string);
+  Image(std::string, bool& opened);
   Image() {}
 
   void prnt_raw_img() const{

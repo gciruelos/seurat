@@ -23,6 +23,7 @@ Commands
 | move                |arrows |             |
 | change color scheme |c      |      C      |
 | change dithering    |d      |             |
+| image info          |i      |             |
 | quit                |q      |             |
 
 

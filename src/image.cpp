@@ -324,11 +324,17 @@ color_matrix Image::generate_representation(int width, int height, options* opt)
 }
 
 
-Image::Image(std::string filename) {
+Image::Image(std::string filename, bool& opened) {
   std::ifstream ifs(filename.c_str());
 
-  int format = image_detect_format(ifs);
+  if(ifs.is_open()){
+
+    int format = image_detect_format(ifs);
   
-  if (format == 2)
-    read_from_bmp(filename.c_str(), matrix);
+    if (format == 2)
+      read_from_bmp(filename.c_str(), matrix);
+
+    opened = true;
+  }
+  else opened = false;
 }

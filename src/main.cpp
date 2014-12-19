@@ -83,7 +83,7 @@ int input_action(options* opt){
   if (ch == ERR) return 2;
   else if(ch == 'q') return 0;
   else if((ch == 'Z' || ch == '+') && 
-             opt->delta_x * ZOOM_IN > 10 && opt->delta_y * ZOOM_IN > 10){
+             opt->delta_x * ZOOM_IN > 15 && opt->delta_y * ZOOM_IN > 15){
     opt->x_i += ((1-ZOOM_IN) * opt->delta_x)/2; // This is because I want to mantain the middle,
     opt->y_i += ((1-ZOOM_IN) * opt->delta_y)/2; // so if     m_x = (x_i + delta_x)/2,    then
                                                 // m_x = (x_i + 0.1 * delta_x + 0.9 * delta_x)/2 
@@ -101,10 +101,10 @@ int input_action(options* opt){
       opt->delta_y *= ZOOM_OUT;
     }
   }
-  else if(ch == KEY_RIGHT) opt->x_i += opt->delta_x * 0.1;
-  else if(ch == KEY_LEFT)  opt->x_i -= opt->delta_x * 0.1;
-  else if(ch == KEY_UP)    opt->y_i -= opt->delta_y * 0.1;
-  else if(ch == KEY_DOWN)  opt->y_i += opt->delta_y * 0.1;
+  else if(ch == 5)  opt->x_i += opt->delta_x * 0.1;
+  else if(ch == 4)  opt->x_i -= opt->delta_x * 0.1;
+  else if(ch == 3)  opt->y_i -= opt->delta_y * 0.1;
+  else if(ch == 2)  opt->y_i += opt->delta_y * 0.1;
   
   
   else if(ch == 'i')  opt->info = !opt->info;
@@ -127,7 +127,7 @@ int input_action(options* opt){
 
 
 static void show_usage(std::string name){
-  std::cerr << "Usage: " << name << "[--debug] [-h | --help] filename" << std::endl
+  std::cerr << "Usage: " << name << " [--debug] [-h | --help] filename" << std::endl
             << "Options:\n"
             << "\t-h,--help\t\t\tShow this message\n"
             << "\t--debug\tDebug mode"
@@ -173,18 +173,29 @@ int parse_args(int argc, char* argv[], options* opt){
 int main(int argc, char* argv[]){
   options* opt = new options;
   if(parse_args(argc, argv, opt)) return 1;
-  
+
+  Image img(opt->filename, opt->opened);
+
+  if(!opt->opened) {
+    std::cout << "could not open file" << std::endl;
+    return 1;
+  }
+
   start_curses();
-
-  Image img(opt->filename);
-
+  
   opt->width = img.width();
   opt->height = img.height();
 
   opt->x_i = 0, opt->delta_x = opt->width;
   opt->y_i = 0, opt->delta_y = opt->height; 
 
-  if(opt->debug) opt->logs << "Logs...\n";
+  if(opt->debug) {
+    opt->logs << "Logs...\n"
+              << "key right: " << (char) KEY_RIGHT << "\n"
+              << "key left: " << (char) KEY_LEFT << "\n"
+              << "key up: " << (char) KEY_UP << "\n"
+              << "key down: " << (char) KEY_DOWN << "\n";
+  }
   
   /* main program loop */
   while (true) {
