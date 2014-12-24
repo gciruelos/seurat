@@ -19,17 +19,16 @@ Try it out
 
 1. Clone the repo in your favourite folder
 
-    $ git clone https://github.com/gciruelos/seurat.git
-
-    $ cd seurat
+```%git clone https://github.com/gciruelos/seurat.git ```
+```%cd seurat```
 
 2. Compile
 
-    $ make
+```%make```
 
 3. Use
 
-    $ ./seurat <args>
+```%./seurat <args> ```
    
 
 
