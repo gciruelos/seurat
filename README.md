@@ -2,12 +2,6 @@ seurat
 ======
 
 
-
-Supported formats
------------------
-* jpeg, png, bmp, hdr, psd, tga, gif, pic
-
-
 Example of use
 --------------
 
