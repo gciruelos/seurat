@@ -13,6 +13,26 @@ Example of use
 
 ![example of use](doc/show.gif "Example")
 
+
+Try it out
+----------
+
+1. Clone the repo in your favourite folder
+
+    $ git clone https://github.com/gciruelos/seurat.git
+
+    $ cd seurat
+
+2. Compile
+
+    $ make
+
+3. Use
+
+    $ ./seurat <args>
+   
+
+
 Commands
 --------
 
