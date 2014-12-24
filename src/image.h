@@ -3,13 +3,14 @@
 #include <vector>
 #include <string>
 
-#include "bmp.h"
+#define STB_IMAGE_IMPLEMENTATION 
+#include "stb_image.h"
+
 
 #ifndef PIXEL
 #include "pixel.h"
 #define PIXEL
 #endif 
-
 
 typedef unsigned char color;
 typedef std::vector< std::vector<color> > color_matrix;

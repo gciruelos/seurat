@@ -1,32 +1,5 @@
 #include "image.h"
 
-int image_detect_format(std::istream& is) {
-
-  /* JPG = 0
-   * PNG = 1
-   * BMP = 2
-   * GIF = 3
-   */
-  unsigned char in;
-
-  std::vector<unsigned char> bytes;
-
-  for(int i = 0; i< 10; i++) {
-    is >> in;
-    bytes.push_back(in);
-  }
-
-  if(bytes[0] == 0xff && bytes[1] == 0xd8) return 0;
-
-  else if(bytes[0] == 0x89 && bytes[1] == 0x50 &&
-          bytes[2] == 0x4e && bytes[3] == 0x47 &&
-          bytes[4] == 0x0d && bytes[5] == 0x0a &&
-          bytes[6] == 0x1a && bytes[7] == 0x0a) return 1;
-
-  else if(bytes[0] == 'B' && bytes[1] == 'M') return 2;
-
-  else return -1;
-}
 
 int rgbto8(pixel p) {
   int r = p.r;
@@ -325,16 +298,30 @@ color_matrix Image::generate_representation(int width, int height, options* opt)
 
 
 Image::Image(std::string filename, bool& opened) {
-  std::ifstream ifs(filename.c_str());
+  int x,y,n;
 
-  if(ifs.is_open()){
+  unsigned char *data = stbi_load(filename.c_str(), &x, &y, &n, 3);
 
-    int format = image_detect_format(ifs);
+  if (data == NULL) {
+    opened = false;
+  } else {
   
-    if (format == 2)
-      read_from_bmp(filename.c_str(), matrix);
+    for(int i = 0; i<y; i++){
+      std::vector<pixel> row;
+      for(int j = 0; j<x; j+=1){
+        pixel p;
 
+        int cell = i*x*3 + 3*j;
+        
+        p.r = data[cell];
+        p.g = data[cell+1]; 
+        p.b = data[cell+2];
+        row.push_back(p);
+      }
+      matrix.push_back(row);
+    }
     opened = true;
   }
-  else opened = false;
+
+  stbi_image_free(data);
 }
