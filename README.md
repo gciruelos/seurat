@@ -17,20 +17,20 @@ Example of use
 Try it out
 ----------
 
-1. Clone the repo in your favourite folder
+Clone the repo in your favourite folder
 
 ```sh
 git clone https://github.com/gciruelos/seurat.git
 cd seurat
 ```
 
-2. Compile
+Compile
 
 ```sh
 make
 ```
 
-3. Use
+Use
 
 ```sh
 ./seurat <args>
