@@ -1,44 +1,75 @@
 #include "image.h"
 
 
-int rgbto8(pixel p) {
+
+pixel ntorgb(int n){
+  pixel p;
+  switch(n){
+    case 0:  p.r = 0;   p.g = 0;   p.b = 0;   break; // black
+    case 1:  p.r = 255; p.g = 0;   p.b = 0;   break; // red
+    case 2:  p.r = 0;   p.g = 255; p.b = 0;   break; // green
+    case 3:  p.r = 255; p.g = 255; p.b = 0;   break; // yellow
+    case 4:  p.r = 0;   p.g = 0;   p.b = 255; break; // blue
+    case 5:  p.r = 255; p.g = 0;   p.b = 255; break; // magenta
+    case 6:  p.r = 0;   p.g = 255; p.b = 255; break; // cyan
+    case 7:  p.r = 255; p.g = 255; p.b = 255; break; // white
+    case 8:  p.r = 0;   p.g = 0;   p.b = 0;   break;
+    case 9:  p.r = 128; p.g = 0;   p.b = 0;   break;
+    case 10: p.r = 0;   p.g = 128; p.b = 0;   break;
+    case 11: p.r = 128; p.g = 128; p.b = 0;   break;
+    case 12: p.r = 0;   p.g = 0;   p.b = 128; break;
+    case 13: p.r = 128; p.g = 0;   p.b = 128; break;
+    case 14: p.r = 0;   p.g = 128; p.b = 128; break;
+    case 15: p.r = 128; p.g = 128; p.b = 128; break;
+  }
+  return p;
+}
+
+
+pixel add(pixel a, pixel b){
+  pixel c;
+  c.r = a.r+b.r; c.g = a.g+b.g; c.b = a.b+b.b;
+  return c;
+}
+pixel diff(pixel a, pixel b){
+  pixel c;
+  c.r = a.r-b.r; c.g = a.g-b.g; c.b = a.b-b.b;
+  return c;
+}
+pixel mult(float k, pixel a){
+  pixel c;
+  c.r = k * a.r; c.g = k * a.g; c.b = k * a.b;
+  return c;
+}
+
+
+int rgbtoc(pixel p, int c){
   int r = p.r;
   int g = p.g;
   int b = p.b;
 
-  int c = 128;
 
-  if (r < c) {
-    if(g < c) {
-      if(b < c) return 0; //black
-      else        return 4; //blue
-    } else {
-      if(b < c) return 2; //green
-      else        return 6; //cyan
-    }
-  } else {
-    if(g < c) {
-      if(b < c) return 1; //red
-      else        return 5; //magenta
-    } else {
-      if(b < c) return 3; //yellow
-      else        return 7; //white
+
+  pixel colors[c];
+
+  for(int i = 0; i<c;i++){
+    colors[i] = diff(ntorgb(i), p);
+  }
+
+  int iMin = -1;
+  int min = 255*3;
+  for(int i = 0; i<c;i++){
+    pixel q = colors[i];
+
+    int distance = abs(q.r)+abs(q.g)+abs(q.b);
+
+    if (distance < min){
+      iMin = i;
+      min = distance;
     }
   }
-}
+  return c!=2 ? iMin : iMin*7; // if colors == 2: 0->0, 1->7
 
-int rgbto16(pixel p) {
-  int code8 = rgbto8(p);
-  
-  if(p.r+p.g+p.b > 384) return code8+8;
-  else return code8;
-}
-
-int rgbto2(pixel p){
-  if (p.r+p.g+p.b > 384)
-    return 7;
-  else
-    return 0;
 }
 
 
@@ -86,46 +117,6 @@ image_matrix Image::scale(int repr_width, int repr_height, int x_i, int delta_x,
   return scaled;
 }
 
-pixel ntorgb(int n){
-  pixel p;
-  switch(n){
-    case 0:  p.r = 0;   p.g = 0;   p.b = 0;   break; // black
-    case 1:  p.r = 255; p.g = 0;   p.b = 0;   break; // red
-    case 2:  p.r = 0;   p.g = 255; p.b = 0;   break; // green
-    case 3:  p.r = 255; p.g = 255; p.b = 0;   break; // yellow
-    case 4:  p.r = 0;   p.g = 0;   p.b = 255; break; // blue
-    case 5:  p.r = 255; p.g = 0;   p.b = 255; break; // magenta
-    case 6:  p.r = 0;   p.g = 255; p.b = 255; break; // cyan
-    case 7:  p.r = 255; p.g = 255; p.b = 255; break; // white
-    case 8:  p.r = 0;   p.g = 0;   p.b = 0;   break;
-    case 9:  p.r = 128; p.g = 0;   p.b = 0;   break;
-    case 10: p.r = 0;   p.g = 128; p.b = 0;   break;
-    case 11: p.r = 128; p.g = 128; p.b = 0;   break;
-    case 12: p.r = 0;   p.g = 0;   p.b = 128; break;
-    case 13: p.r = 128; p.g = 0;   p.b = 128; break;
-    case 14: p.r = 0;   p.g = 128; p.b = 128; break;
-    case 15: p.r = 128; p.g = 128; p.b = 128; break;
-  }
-  return p;
-}
-
-pixel add(pixel a, pixel b){
-  pixel c;
-  c.r = a.r+b.r; c.g = a.g+b.g; c.b = a.b+b.b;
-  return c;
-}
-pixel diff(pixel a, pixel b){
-  pixel c;
-  c.r = a.r-b.r; c.g = a.g-b.g; c.b = a.b-b.b;
-  return c;
-}
-pixel mult(float k, pixel a){
-  pixel c;
-  c.r = k * a.r; c.g = k * a.g; c.b = k * a.b;
-  return c;
-}
-
-
 color_matrix dithering(image_matrix m, int colors, int option){ 
   color_matrix result;
 
@@ -133,9 +124,8 @@ color_matrix dithering(image_matrix m, int colors, int option){
     for(int i = 0; i < m.size(); i++){
       for(int j = 0; j < m[0].size(); j++){
         pixel old_pixel = m[i][j];
-        pixel new_pixel = ntorgb(colors == 2? 
-                            rgbto2(old_pixel) : 
-                            (colors == 8? rgbto8(old_pixel) : rgbto16(old_pixel)));
+        pixel new_pixel = ntorgb(rgbtoc(old_pixel, colors));
+
         m[i][j] = new_pixel;
         pixel quant_error = diff(old_pixel, new_pixel);
        
@@ -213,7 +203,7 @@ color_matrix dithering(image_matrix m, int colors, int option){
     std::vector<color> row;
     for(int j = 0; j < m[0].size(); j++){
       pixel p = m[i][j];
-      row.push_back(colors == 2? rgbto2(p) : (colors == 8? rgbto8(p) : rgbto16(p)));
+      row.push_back(rgbtoc(p, colors));
     }
     result.push_back(row);
   } 
