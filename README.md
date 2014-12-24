@@ -5,7 +5,7 @@ seurat
 
 Supported formats
 -----------------
-* bmp
+* jpeg, png, bmp, hdr, psd, tga, gif, pic
 
 
 Example of use
@@ -21,11 +21,14 @@ Commands
 | zoom in             |+      |      Z      |
 | zoom out            |-      |      z      |
 | move                |arrows |             |
+| image info          |i      |             |
 | change color scheme |c      |      C      |
 | change dithering    |d      |             |
-| image info          |i      |             |
 | quit                |q      |             |
 
+Acknowledgements
+----------------
+* [nothings](https://github.com/nothings) for stb\_image.h
 
 
 
