@@ -1,5 +1,5 @@
-CC = clang++
-CFLAGS = -c -Wall -O2 -std=c++11
+CC = g++
+CFLAGS = -c -Wall -Wextra -O2 -std=c++11
 
 all: seurat
 

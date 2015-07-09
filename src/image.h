@@ -47,8 +47,8 @@ public:
   Image() {}
 
   void prnt_raw_img() const{
-    for(int i = 0; i<matrix.size(); i++){
-      for (int j = 0; j<matrix[0].size(); j++) {
+    for(unsigned int i = 0; i<matrix.size(); i++){
+      for (unsigned int j = 0; j<matrix[0].size(); j++) {
         pixel p = matrix[i][j];
         std::cout << p.r << p.g << p.b;
       }std::cout << std::endl;
@@ -62,7 +62,7 @@ public:
     return (matrix[0]).size();
   }
 
-  image_matrix scale(int, int, int, int, int, int) const;
+  image_matrix scale(unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int) const;
   color_matrix generate_representation(int, int, options*) const;
 private:
   image_matrix matrix;

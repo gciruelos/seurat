@@ -44,12 +44,6 @@ pixel mult(float k, pixel a){
 
 
 int rgbtoc(pixel p, int c){
-  int r = p.r;
-  int g = p.g;
-  int b = p.b;
-
-
-
   pixel colors[c];
 
   for(int i = 0; i<c;i++){
@@ -73,18 +67,18 @@ int rgbtoc(pixel p, int c){
 }
 
 
-image_matrix Image::scale(int repr_width, int repr_height, int x_i, int delta_x, int y_i, int delta_y)const {
-  // neighbour kind of algorithm
+image_matrix Image::scale(unsigned int repr_width, unsigned int repr_height, unsigned int x_i, unsigned int delta_x, unsigned int y_i, unsigned int delta_y)const {
+  // k-neighbour algorithm
   // TODO : Implement bicubic interpolation
 
   float scale = (this->width())/((float) repr_width);
   image_matrix scaled;
 
-  for(int i = 0; i < repr_height; i++){
+  for(unsigned int i = 0; i < repr_height; i++){
     std::vector<pixel> row;
-    for(int j = 0; j < repr_width; j++){
-      int i_ = (int) i*scale; i_ = i_ * (((float) delta_y)/(matrix.size())) + y_i;
-      int j_ = (int) j*scale; j_ = j_ * (((float) delta_x)/(matrix[0].size())) + x_i;
+    for(unsigned int j = 0; j < repr_width; j++){
+      unsigned int i_ = (int) i*scale; i_ = i_ * (((float) delta_y)/(matrix.size())) + y_i;
+      unsigned int j_ = (int) j*scale; j_ = j_ * (((float) delta_x)/(matrix[0].size())) + x_i;
       if (i_ >= matrix.size()) i_ = matrix.size()-1;
       if (j_ >= matrix[0].size()) j_ = matrix[0].size()-1;
 
@@ -92,15 +86,15 @@ image_matrix Image::scale(int repr_width, int repr_height, int x_i, int delta_x,
       std::vector<pixel> neighbours;
 
       int scale_ = scale/4;
-      for(int a = i_ - scale_; a < i_ + scale_; a++){
-        for(int b = j_ - scale_; b < j_ + scale_; b++){
+      for(int a = i_ - scale_; a < (int) i_ + scale_; a++){
+        for(int b = j_ - scale_; b < (int) j_ + scale_; b++){
           if (a>0 && a<this->height() && b>0 && b<this->width())
             neighbours.push_back(matrix[a][b]);
         }
       }
 
       pixel p; p.r = 0; p.g = 0; p.b = 0;
-      for(int a  = 0; a < neighbours.size(); a++){
+      for(unsigned int a  = 0; a < neighbours.size(); a++){
         p.r+= neighbours[a].r;
         p.g+= neighbours[a].g;
         p.b+= neighbours[a].b;
@@ -121,8 +115,8 @@ color_matrix dithering(image_matrix m, int colors, int option){
   color_matrix result;
 
   if (option){
-    for(int i = 0; i < m.size(); i++){
-      for(int j = 0; j < m[0].size(); j++){
+    for(unsigned int i = 0; i < m.size(); i++){
+      for(unsigned int j = 0; j < m[0].size(); j++){
         pixel old_pixel = m[i][j];
         pixel new_pixel = ntorgb(rgbtoc(old_pixel, colors));
 
@@ -199,9 +193,9 @@ color_matrix dithering(image_matrix m, int colors, int option){
     }
   }
 
-  for(int i = 0; i < m.size(); i++){
+  for(unsigned int i = 0; i < m.size(); i++){
     std::vector<color> row;
-    for(int j = 0; j < m[0].size(); j++){
+    for(unsigned int j = 0; j < m[0].size(); j++){
       pixel p = m[i][j];
       row.push_back(rgbtoc(p, colors));
     }
@@ -225,7 +219,7 @@ color_matrix Image::generate_representation(int width, int height, options* opt)
     int repr_width = width;
     int repr_height  = (int) ((float) this->height() * repr_width / this->width());
 
-    float scale = (this->height())/((float) repr_height);
+    //float scale = (this->height())/((float) repr_height);
 
     int padding = (height - repr_height)/2;
     bool one_more = (height - repr_height)%2 != 0;
@@ -256,7 +250,7 @@ color_matrix Image::generate_representation(int width, int height, options* opt)
     int repr_height = height;
     int repr_width  = (int) ((float) this->width() * repr_height / this->height());
 
-    float scale = (this->width())/((float) repr_width);
+    //float scale = (this->width())/((float) repr_width);
 
     int padding = (width - repr_width)/2;
     bool one_more = (width - repr_width)%2 != 0;
